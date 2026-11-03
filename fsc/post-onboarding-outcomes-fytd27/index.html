@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSC Post-Onboarding Outcomes · FYTD'27</title>
+<!-- v4 -->
+<style>
+:root {
+  --sf-navy:  #032D60;
+  --sf-blue:  #0176D3;
+  --sf-lblue: #1B96FF;
+  --sf-teal:  #06A59A;
+  --green:    #2E844A;
+  --orange:   #DD7A01;
+  --red:      #BA0517;
+  --purple:   #9050E9;
+  --gray-90:  #181818;
+  --gray-70:  #444444;
+  --gray-50:  #747474;
+  --gray-20:  #DDDBDA;
+  --gray-10:  #F3F2F1;
+  --white:    #FFFFFF;
+  --border:   #E5E5E5;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Salesforce Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--gray-10);
+  color:var(--gray-90);
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+.hdr{
+  background:linear-gradient(120deg,#032D60 0%,#0176D3 100%);
+  padding:22px 36px 18px;
+  color:#fff;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.hdr-left .eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:5px}
+.hdr-left .title{font-size:24px;font-weight:700;letter-spacing:-.3px}
+.hdr-left .sub{font-size:13px;color:rgba(255,255,255,.75);margin-top:3px}
+.hdr-badge{
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:20px;
+  padding:5px 14px;
+  font-size:12px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+/* ── TABS ── */
+.tabs{background:#032D60;padding:0 36px;display:flex;gap:0;border-bottom:2px solid rgba(255,255,255,.12)}
+.tab-btn{
+  padding:12px 20px;
+  color:rgba(255,255,255,.6);
+  font-size:13px;font-weight:500;
+  cursor:pointer;border:none;background:transparent;
+  position:relative;transition:color .2s;
+}
+.tab-btn:hover{color:rgba(255,255,255,.9)}
+.tab-btn.active{color:#fff;font-weight:700}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:2px;background:#1B96FF;
+}
+
+/* ── PAGE ── */
+.page{display:none;padding:28px 36px 48px}
+.page.active{display:block}
+
+/* ── STAT TILES ── */
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:24px}
+.tile{
+  background:#fff;border-radius:8px;padding:18px 16px 14px;
+  border:1px solid var(--border);position:relative;overflow:hidden;
+  transition:box-shadow .18s;cursor:default;
+}
+.tile:hover{box-shadow:0 4px 14px rgba(0,0,0,.09)}
+.tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.t-blue::before{background:var(--sf-blue)}
+.t-green::before{background:var(--green)}
+.t-purple::before{background:var(--purple)}
+.t-orange::before{background:var(--orange)}
+.t-teal::before{background:var(--sf-teal)}
+.t-gray::before{background:var(--gray-50)}
+
+.tile-num{font-size:30px;font-weight:800;line-height:1;margin-bottom:4px}
+.t-blue .tile-num{color:var(--sf-blue)}
+.t-green .tile-num{color:var(--green)}
+.t-purple .tile-num{color:var(--purple)}
+.t-orange .tile-num{color:var(--orange)}
+.t-teal .tile-num{color:var(--sf-teal)}
+.t-gray .tile-num{color:var(--gray-70)}
+
+.tile-lbl{font-size:11px;font-weight:700;color:var(--gray-50);text-transform:uppercase;letter-spacing:.05em;line-height:1.3}
+.tile-sub{font-size:11px;color:var(--gray-50);margin-top:5px}
+
+/* ── SECTION LABEL ── */
+.sec-lbl{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--gray-50);margin-bottom:12px;
+}
+
+/* ── CARDS GRID ── */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px}
+.card{background:#fff;border-radius:8px;border:1px solid var(--border);padding:20px}
+.card-title{font-size:13px;font-weight:700;color:var(--gray-90);margin-bottom:3px}
+.card-sub{font-size:11px;color:var(--gray-50);margin-bottom:16px}
+
+/* ── HEALTH SCORECARD ── */
+.scorecard{width:100%;border-collapse:collapse;font-size:13px}
+.scorecard th{
+  background:var(--gray-10);
+  padding:9px 14px;
+  text-align:left;
+  font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.07em;
+  color:var(--gray-50);
+  border-bottom:2px solid var(--border);
+}
+.scorecard td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.scorecard tr:last-child td{border-bottom:none}
+.scorecard tr:hover td{background:#FAFAFA}
+.sc-metric{font-weight:600;font-size:13px}
+.sc-value{font-size:15px;font-weight:800;color:var(--gray-90)}
+.sc-sub{font-size:11px;color:var(--gray-50);margin-top:1px}
+.sc-bar-track{height:8px;background:var(--gray-10);border-radius:4px;overflow:hidden;width:100%;min-width:80px}
+.sc-bar-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.status-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:12px;
+  font-size:11px;font-weight:700;white-space:nowrap;
+}
+.s-strong{background:#EEF5EE;color:#2E844A}
+.s-track{background:#EEF4FF;color:#0176D3}
+.s-warn{background:#FEF3E2;color:#DD7A01}
+.s-low{background:#FEF3E2;color:#DD7A01}
+
+/* ── MILESTONE BAR CHART ── */
+.ms-bars{display:flex;align-items:flex-end;gap:10px;height:230px;padding-bottom:0}
+.ms-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;cursor:default}
+.ms-bar-wrap{
+  flex:1;width:100%;position:relative;
+  border-radius:6px 6px 0 0;overflow:visible;
+}
+.ms-bar-bg{
+  position:absolute;inset:0;
+  background:#E8E8E8;
+  border-radius:6px;
+}
+.ms-bar-fill{
+  position:absolute;bottom:0;left:0;width:100%;
+  border-radius:6px;
+  transition:height 1.1s cubic-bezier(.4,0,.2,1);
+}
+.ms-bar-wrap:hover .ms-bar-fill{filter:brightness(.9)}
+.ms-pct-top{
+  position:absolute;top:-22px;left:0;width:100%;
+  text-align:right;font-size:11px;font-weight:700;color:var(--gray-70);
+  padding-right:2px;
+}
+.ms-lbl{
+  margin-top:8px;text-align:center;font-size:11px;
+  color:var(--gray-70);line-height:1.35;
+}
+.ms-lbl strong{display:block;font-size:11px;font-weight:700;color:var(--gray-90)}
+
+/* ── HBAR ── */
+.hbar-list{display:flex;flex-direction:column;gap:13px}
+.hbar-row{display:flex;flex-direction:column;gap:4px}
+.hbar-hd{display:flex;justify-content:space-between;align-items:baseline}
+.hbar-lbl{font-size:12px;font-weight:500;color:var(--gray-70)}
+.hbar-val{font-size:13px;font-weight:800;color:var(--gray-90)}
+.hbar-track{height:9px;background:var(--gray-10);border-radius:4px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+/* ── NARRATIVE HERO (Tab 2) ── */
+.narrative-hero{
+  background:linear-gradient(120deg,#032D60 0%,#0176D3 100%);
+  border-radius:10px;
+  padding:24px 28px;
+  color:#fff;
+  margin-bottom:24px;
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+.nh-big{font-size:52px;font-weight:900;line-height:1;color:#fff;flex-shrink:0}
+.nh-text .nh-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.nh-text .nh-body{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;max-width:560px}
+.nh-divider{width:2px;background:rgba(255,255,255,.2);align-self:stretch;flex-shrink:0}
+.nh-stat{text-align:center;flex-shrink:0}
+.nh-stat-val{font-size:36px;font-weight:800;color:#fff;line-height:1}
+.nh-stat-lbl{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+/* ── COMPARISON CARDS ── */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.cmp-card{border-radius:10px;padding:22px 24px;border:2px solid}
+.cmp-guide{background:linear-gradient(135deg,#EEF4FF 0%,#F8FAFF 100%);border-color:#0176D3}
+.cmp-noguide{background:#FAFAFA;border-color:#DDDBDA}
+.cmp-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
+.cmp-guide .cmp-eyebrow{color:#0176D3}
+.cmp-noguide .cmp-eyebrow{color:#747474}
+.cmp-name{font-size:15px;font-weight:700;margin-bottom:2px}
+.cmp-guide .cmp-name{color:#032D60}
+.cmp-noguide .cmp-name{color:#444}
+.cmp-count{font-size:40px;font-weight:900;line-height:1;margin:10px 0 2px}
+.cmp-guide .cmp-count{color:#0176D3}
+.cmp-noguide .cmp-count{color:#747474}
+.cmp-pct{font-size:13px;color:var(--gray-50);margin-bottom:18px}
+.cmp-metrics{display:flex;flex-direction:column;gap:11px}
+.cmp-metric-row{display:flex;align-items:center;gap:10px}
+.cmp-metric-lbl{font-size:12px;color:var(--gray-70);flex:1;min-width:90px}
+.cmp-track{flex:2;height:8px;background:var(--gray-20);border-radius:4px;overflow:hidden}
+.cmp-fill-guide{height:100%;border-radius:4px;background:#0176D3;transition:width 1s}
+.cmp-fill-noguide{height:100%;border-radius:4px;background:#AAAAAA;transition:width 1s}
+.cmp-pct-val{font-size:13px;font-weight:800;min-width:36px;text-align:right}
+.cmp-guide .cmp-pct-val{color:#0176D3}
+.cmp-noguide .cmp-pct-val{color:#747474}
+
+/* ── GROUPED BAR CHART ── */
+.gbar-chart{position:relative}
+.gbar-legend{display:flex;gap:20px;margin-bottom:14px}
+.gbar-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-70)}
+.gbar-swatch{width:12px;height:12px;border-radius:2px}
+.gbar-body{
+  display:flex;gap:24px;
+  padding-top:28px;
+  position:relative;
+}
+.gbar-body::before{
+  content:'';position:absolute;
+  left:0;right:0;top:28px;height:168px;
+  background:repeating-linear-gradient(to bottom,
+    transparent 0,transparent calc(25% - 1px),
+    #EEEEEE calc(25% - 1px),#EEEEEE 25%);
+  pointer-events:none;
+}
+.gbar-cluster{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.gbar-bars{
+  display:flex;align-items:flex-end;gap:5px;width:100%;
+  justify-content:center;height:168px;
+  border-bottom:2px solid var(--gray-20);
+}
+.gbar-bar{
+  flex:1;max-width:52px;border-radius:4px 4px 0 0;
+  position:relative;cursor:pointer;transition:filter .15s;min-height:3px;
+}
+.gbar-bar:hover{filter:brightness(.88)}
+.gb-guide{background:#0176D3}
+.gb-noguide{background:#AAAAAA}
+.gbar-bar-lbl{
+  position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:800;white-space:nowrap;
+}
+.gb-guide .gbar-bar-lbl{color:#0176D3}
+.gb-noguide .gbar-bar-lbl{color:#747474}
+.gbar-axis-lbl{
+  margin-top:8px;font-size:10px;font-weight:600;
+  color:var(--gray-50);text-align:center;line-height:1.4;width:100%;
+}
+.delta-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;
+}
+.delta-up{background:#EEF5EE;color:#2E844A}
+.delta-sm{background:#EEF4FF;color:#0176D3}
+
+/* ── TOOLTIP ── */
+.tipbox{
+  position:fixed;background:rgba(0,0,0,.88);color:#fff;
+  padding:7px 11px;border-radius:5px;font-size:11px;
+  pointer-events:none;z-index:9999;max-width:240px;line-height:1.5;
+  display:none;
+}
+.tipbox.on{display:block}
+
+/* ── CASE TABLE ── */
+.case-table{width:100%;border-collapse:collapse;font-size:12px}
+.case-table th{
+  background:var(--gray-10);padding:9px 12px;
+  text-align:left;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--gray-50);
+  border-bottom:2px solid var(--border);white-space:nowrap;
+}
+.case-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.case-table tr:last-child td{border-bottom:none}
+.case-table tr:hover td{background:#FAFAFA}
+.scope-yes{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;
+  background:#EEF5EE;color:#2E844A;white-space:nowrap;
+}
+.scope-no{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;
+  background:#FEF3E2;color:#BA0517;white-space:nowrap;
+}
+.guide-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  margin-right:4px;vertical-align:middle;
+}
+.theme-pill{
+  display:inline-flex;padding:2px 8px;border-radius:10px;
+  font-size:11px;font-weight:600;white-space:nowrap;
+}
+.tp-access{background:#EEF4FF;color:#0176D3}
+.tp-howto{background:#F5F0FF;color:#9050E9}
+.tp-perm{background:#E6F9F8;color:#06A59A}
+.tp-prov{background:#F5F0FF;color:#9050E9}
+.tp-setup{background:#EEF4FF;color:#0176D3}
+
+/* ── SCOPE HERO ── */
+.scope-hero{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;
+}
+.scope-block{
+  border-radius:10px;padding:24px;text-align:center;border:2px solid;
+}
+.scope-in{background:linear-gradient(135deg,#EEF5EE,#F8FFF8);border-color:#2E844A}
+.scope-out{background:linear-gradient(135deg,#FFF5F5,#FFF8F0);border-color:#BA0517}
+.scope-warn{background:linear-gradient(135deg,#FEF3E2,#FFFAF0);border-color:#DD7A01}
+.scope-num{font-size:52px;font-weight:900;line-height:1;margin:8px 0 4px}
+.scope-in .scope-num{color:#2E844A}
+.scope-out .scope-num{color:#BA0517}
+.scope-label{font-size:13px;font-weight:700;margin-bottom:4px}
+.scope-in .scope-label{color:#2E844A}
+.scope-out .scope-label{color:#BA0517}
+.scope-desc{font-size:12px;color:var(--gray-50);line-height:1.5}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .tiles{grid-template-columns:repeat(3,1fr)}
+  .row2,.cmp-grid,.row3,.scope-hero{grid-template-columns:1fr}
+  .hdr,.tabs,.page{padding-left:16px;padding-right:16px}
+  .narrative-hero{flex-direction:column;gap:16px}
+  .nh-divider{display:none}
+}
+</style>
+</head>
+<body>
+<div class="tipbox" id="tip"></div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="eyebrow">Financial Services Cloud · Customer Onboarding</div>
+    <div class="title">Post-Onboarding Outcomes Dashboard</div>
+    <div class="sub">FYTD'27 · Closed Accounts · Premier Onboarding Program</div>
+  </div>
+  <div class="hdr-badge">As of Oct 2026 · 72 FSC Accounts</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('overview',this)">Program Overview</button>
+  <button class="tab-btn" onclick="showTab('guide',this)">Guide Engagement Impact</button>
+  <button class="tab-btn" onclick="showTab('cases',this)">Support Case Analysis</button>
+<!-- Onboarding Process Banner (always visible) -->
+<div style="padding:20px 36px 0">
+  <div style="background:linear-gradient(135deg,#F8FAFF 0%,#EEF4FF 100%);border:1px solid #C9D8F5;border-radius:10px;padding:16px 20px 18px;margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0176D3;margin-bottom:14px">How We Currently Onboard</div>
+    <div style="display:flex;align-items:flex-start;gap:0;overflow-x:auto">
+
+      <!-- Engagement 1 -->
+      <div style="flex-shrink:0">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;background:#EEF4FF;color:#0176D3;padding:2px 8px;border-radius:4px;margin-bottom:10px;display:inline-block">Engagement 1</div>
+        <div style="display:flex;align-items:center">
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Meet the customer at the start of their Premier Onboarding journey — set context, make introductions, and build rapport.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">New<br>Beginning</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Walk through their Premier / Signature Success Plan benefits — what they're entitled to and how to maximise value.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">Success<br>Benefits</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Discuss the customer's specific business goals — understand their FSC use case and what success looks like for them.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">Business<br>Goals</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Map FSC features to the customer's stated business goals — show what's most relevant to their needs and priorities.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">Feature<br>Matching</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Walk the customer through Salesforce Go — demonstrate self-service resources, trails, and guides available to them.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">SF Go<br>Walkthrough</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Have the customer log into Salesforce Go live during the session — confirms they have access and are set up for self-service.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">SF Go<br>Login</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:68px;flex-shrink:0;cursor:default" data-tip="Review Help &amp; Training resources and check org login health — verify the org is correctly configured and the customer knows where to get help.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#0176D3;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">7</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">H&amp;T + Org<br>Health</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Phase separator -->
+      <div style="width:1px;background:#C9D8F5;margin:0 14px;align-self:stretch;flex-shrink:0"></div>
+
+      <!-- Engagement 2 -->
+      <div style="flex-shrink:0">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;background:#E6F9F8;color:#06A59A;padding:2px 8px;border-radius:4px;margin-bottom:10px;display:inline-block">Engagement 2</div>
+        <div style="display:flex;align-items:center">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:80px;flex-shrink:0;cursor:default" data-tip="Second call: deliver the customer's personalised Success Path — curated resources, next steps, and recommended actions aligned to their business goals.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#06A59A;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">8</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">Success Path<br>+ Resources</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase separator -->
+      <div style="width:1px;background:#C9D8F5;margin:0 14px;align-self:stretch;flex-shrink:0"></div>
+
+      <!-- Ongoing -->
+      <div style="flex-shrink:0">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;background:#F5F0FF;color:#9050E9;padding:2px 8px;border-radius:4px;margin-bottom:10px;display:inline-block">Ongoing</div>
+        <div style="display:flex;align-items:center">
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:72px;flex-shrink:0;cursor:default" data-tip="Handover to a Customer Success Guide — based on customer availability and willingness, on a topic agreed during the Success Path session. Optional.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#9050E9;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">9</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">Guide<br>Handover</div>
+          </div>
+          <div style="color:#C9D8F5;font-size:16px;padding-bottom:14px;flex-shrink:0">&#8250;</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;width:72px;flex-shrink:0;cursor:default" data-tip="90-day check-in: review overall org health, product adoption readiness, and next steps for continued success.">
+            <div style="width:26px;height:26px;border-radius:50%;background:#9050E9;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">10</div>
+            <div style="font-size:10px;color:#444;line-height:1.3;text-align:center">90-Day<br>Check-in</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 1 — PROGRAM OVERVIEW
+══════════════════════════════════════════ -->
+<div class="page active" id="tab-overview">
+
+  <!-- Stat Tiles -->
+  <div class="tiles">
+    <div class="tile t-blue" data-tip="72 unique FSC accounts completed Premier Onboarding in FYTD'27.">
+      <div class="tile-num">72</div>
+      <div class="tile-lbl">Accounts Onboarded</div>
+      <div class="tile-sub">FYTD'27 · FSC</div>
+    </div>
+    <div class="tile t-green" data-tip="Average CSAT rating across FSC onboarded accounts. Scale 1–5.">
+      <div class="tile-num">4.8<span style="font-size:16px">/5</span></div>
+      <div class="tile-lbl">Overall CSAT</div>
+      <div class="tile-sub">High satisfaction</div>
+    </div>
+    <div class="tile t-purple" data-tip="8 accounts completed a Guide engagement session (Column G). Only 11% of total — a key scale opportunity.">
+      <div class="tile-num">8</div>
+      <div class="tile-lbl">Guide Engagements</div>
+      <div class="tile-sub">11% of accounts</div>
+    </div>
+    <div class="tile t-orange" data-tip="Average PSL (Provisioned Seat License) activation rate across all 72 accounts. Opportunity to improve.">
+      <div class="tile-num">39<span style="font-size:16px">%</span></div>
+      <div class="tile-lbl">PSL Activation</div>
+      <div class="tile-sub">28 of 72 accounts</div>
+    </div>
+    <div class="tile t-teal" data-tip="14 of 72 accounts have Salesforce Go features activated post-onboarding.">
+      <div class="tile-num">19<span style="font-size:16px">%</span></div>
+      <div class="tile-lbl">SF Go Access</div>
+      <div class="tile-sub">14 of 72 accounts</div>
+    </div>
+    <div class="tile t-gray" data-tip="43 of 72 accounts have at least one foundational FSC feature activated (Financial Account 360, ARC, Field Audit Trail, etc.)">
+      <div class="tile-num">60<span style="font-size:16px">%</span></div>
+      <div class="tile-lbl">Foundational Features</div>
+      <div class="tile-sub">43 of 72 accounts</div>
+    </div>
+  </div>
+
+  <!-- Row: Scorecard + Funnel -->
+  <div class="row2">
+
+    <!-- Program Health Scorecard -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="padding:18px 20px 12px;">
+        <div class="card-title">Program Health Scorecard</div>
+        <div class="card-sub">Adoption outcomes across all 72 onboarded FSC accounts</div>
+      </div>
+      <table class="scorecard">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+            <th style="width:130px;">Progress</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-tip="4.8 avg CSAT — accounts consistently rate onboarding as high quality.">
+            <td><div class="sc-metric">CSAT Score</div></td>
+            <td><div class="sc-value">4.8 / 5.0</div><div class="sc-sub">High satisfaction</div></td>
+            <td><div class="sc-bar-track"><div class="sc-bar-fill" style="width:96%;background:#2E844A;"></div></div></td>
+            <td><span class="status-pill s-strong">★ Strong</span></td>
+          </tr>
+          <tr data-tip="43 of 72 accounts have at least one FSC foundational feature activated post-onboarding.">
+            <td><div class="sc-metric">Foundational Features</div></td>
+            <td><div class="sc-value">60%</div><div class="sc-sub">43 of 72 accounts</div></td>
+            <td><div class="sc-bar-track"><div class="sc-bar-fill" style="width:60%;background:#0176D3;"></div></div></td>
+            <td><span class="status-pill s-track">✓ On Track</span></td>
+          </tr>
+          <tr data-tip="Only 8 of 72 accounts received a Guide engagement session. Scaling this program could improve all downstream metrics.">
+            <td><div class="sc-metric">Guide Engagement</div></td>
+            <td><div class="sc-value">11%</div><div class="sc-sub">8 of 72 accounts</div></td>
+            <td><div class="sc-bar-track"><div class="sc-bar-fill" style="width:11%;background:#DD7A01;"></div></div></td>
+            <td><span class="status-pill s-warn">⚠ Scale Opportunity</span></td>
+          </tr>
+          <tr data-tip="39% average PSL activation — provisioned seat licenses are underutilized. Guide-engaged accounts reach 59%.">
+            <td><div class="sc-metric">PSL Activation Rate</div></td>
+            <td><div class="sc-value">39%</div><div class="sc-sub">Avg across 72 accounts</div></td>
+            <td><div class="sc-bar-track"><div class="sc-bar-fill" style="width:39%;background:#DD7A01;"></div></div></td>
+            <td><span class="status-pill s-warn">⚠ Needs Attention</span></td>
+          </tr>
+          <tr data-tip="14 of 72 accounts have Salesforce Go features active. All SF Go activations are concentrated in guide-engaged accounts.">
+            <td><div class="sc-metric">Salesforce Go Access</div></td>
+            <td><div class="sc-value">19%</div><div class="sc-sub">14 of 72 accounts</div></td>
+            <td><div class="sc-bar-track"><div class="sc-bar-fill" style="width:19%;background:#DD7A01;"></div></div></td>
+            <td><span class="status-pill s-low">⚠ Low Adoption</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Milestone Adoption -->
+    <div class="card">
+      <div class="card-title">Milestone Adoption</div>
+      <div class="card-sub">Status of 72 accounts across separate onboarding milestones</div>
+      <div style="padding-top:28px">
+        <div class="ms-bars" id="ms-bars"></div>
+      </div>
+    </div>
+
+  </div><!-- /row2 -->
+
+</div><!-- /tab-overview -->
+
+<!-- ══════════════════════════════════════════
+     TAB 2 — GUIDE ENGAGEMENT IMPACT
+══════════════════════════════════════════ -->
+<div class="page" id="tab-guide">
+
+  <!-- Narrative Hero -->
+  <div class="narrative-hero">
+    <div class="nh-big">11%</div>
+    <div class="nh-divider"></div>
+    <div class="nh-text">
+      <div class="nh-title">Guide engagement reaches only 11% of onboarded accounts —<br>but those 8 accounts show dramatically better outcomes across every metric.</div>
+      <div class="nh-body">The data makes the case clearly: accounts that received a Guide session activated features at <strong style="color:#fff;">88%</strong> vs 56%, achieved <strong style="color:#fff;">59%</strong> PSL activation vs 37%, and had higher SF Go access. Scaling guide coverage is the single highest-leverage action available to improve post-onboarding adoption.</div>
+    </div>
+    <div class="nh-divider"></div>
+    <div style="display:flex;flex-direction:column;gap:20px;flex-shrink:0">
+      <div class="nh-stat">
+        <div class="nh-stat-val">+32pts</div>
+        <div class="nh-stat-lbl">Feature Activation</div>
+      </div>
+      <div class="nh-stat">
+        <div class="nh-stat-val">+22pts</div>
+        <div class="nh-stat-lbl">PSL Activation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Cards -->
+  <div class="sec-lbl">Segment comparison</div>
+  <div class="cmp-grid">
+    <!-- With Guide -->
+    <div class="cmp-card cmp-guide">
+      <div class="cmp-eyebrow">With Guide Engagement</div>
+      <div class="cmp-name">Guide Session Completed</div>
+      <div class="cmp-count">8</div>
+      <div class="cmp-pct">11% of 72 total FSC accounts</div>
+      <div class="cmp-metrics">
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">Features Activated</span>
+          <div class="cmp-track"><div class="cmp-fill-guide" style="width:88%"></div></div>
+          <span class="cmp-pct-val">88%</span>
+        </div>
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">PSL Activation</span>
+          <div class="cmp-track"><div class="cmp-fill-guide" style="width:59%"></div></div>
+          <span class="cmp-pct-val">59%</span>
+        </div>
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">SF Go Access</span>
+          <div class="cmp-track"><div class="cmp-fill-guide" style="width:25%"></div></div>
+          <span class="cmp-pct-val">25%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Without Guide -->
+    <div class="cmp-card cmp-noguide">
+      <div class="cmp-eyebrow">Without Guide Engagement</div>
+      <div class="cmp-name">No Guide Session Recorded</div>
+      <div class="cmp-count">64</div>
+      <div class="cmp-pct">89% of 72 total FSC accounts</div>
+      <div class="cmp-metrics">
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">Features Activated</span>
+          <div class="cmp-track"><div class="cmp-fill-noguide" style="width:56%"></div></div>
+          <span class="cmp-pct-val">56%</span>
+        </div>
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">PSL Activation</span>
+          <div class="cmp-track"><div class="cmp-fill-noguide" style="width:37%"></div></div>
+          <span class="cmp-pct-val">37%</span>
+        </div>
+        <div class="cmp-metric-row">
+          <span class="cmp-metric-lbl">SF Go Access</span>
+          <div class="cmp-track"><div class="cmp-fill-noguide" style="width:19%"></div></div>
+          <span class="cmp-pct-val">19%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grouped Bar Chart -->
+  <div class="card">
+    <div class="card-title">Adoption Outcomes by Guide Engagement</div>
+    <div class="card-sub">% of accounts achieving each outcome — guide-engaged (8) vs. non-guide (64)</div>
+    <div class="gbar-legend">
+      <div class="gbar-legend-item">
+        <div class="gbar-swatch" style="background:#0176D3"></div>
+        With Guide (8 accounts)
+      </div>
+      <div class="gbar-legend-item">
+        <div class="gbar-swatch" style="background:#AAAAAA"></div>
+        Without Guide (64 accounts)
+      </div>
+    </div>
+    <div class="gbar-body" id="gbar"></div>
+  </div>
+
+</div><!-- /tab-guide -->
+
+<!-- ══════════════════════════════════════════
+     TAB 3 — SUPPORT CASE ANALYSIS
+══════════════════════════════════════════ -->
+<div class="page" id="tab-cases">
+
+  <!-- Volume Banner with monthly trend -->
+  <div style="background:#EEF4FF;border-radius:10px;padding:18px 20px;margin-bottom:20px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px">
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#0176D3;margin-bottom:3px">FSC Support Cases Only &middot; Feb&ndash;Oct 2026</div>
+        <div style="font-size:13px;color:#555;margin-bottom:14px">Excludes Accelerator Delivery Requests &mdash; filtered to Industry-Financial Services product</div>
+        <div style="display:flex;gap:36px">
+          <div>
+            <div style="font-size:36px;font-weight:900;color:#032D60;line-height:1">119</div>
+            <div style="font-size:11px;color:#444;margin-top:3px">Unique Support Cases</div>
+          </div>
+          <div style="width:1px;background:#C5D5E8;align-self:stretch"></div>
+          <div>
+            <div style="font-size:36px;font-weight:900;color:#0176D3;line-height:1">55</div>
+            <div style="font-size:11px;color:#444;margin-top:3px">Unique Accounts</div>
+          </div>
+        </div>
+      </div>
+      <!-- Monthly mini bar chart -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E8FAB;margin-bottom:8px">Case Volume by Month</div>
+        <div style="display:flex;align-items:flex-end;gap:5px;height:60px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:19px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Feb</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">22</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:56px;background:#032D60;border-radius:3px 3px 0 0;position:relative">
+              <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:#032D60;font-weight:800;white-space:nowrap">&#x25B2; spike</div>
+            </div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Mar</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">64</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:6px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Apr</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">7</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:8px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">May</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">9</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:4px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Jun</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">4</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:4px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Jul</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">5</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:6px;background:#0176D3;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Aug</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">7</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:2px;background:#B8CEDE;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Sep</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">0</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="width:28px;height:2px;background:#B8CEDE;border-radius:3px 3px 0 0"></div>
+            <div style="font-size:9px;color:#6E8FAB;font-weight:600">Oct</div>
+            <div style="font-size:9px;color:#032D60;font-weight:700">1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Tiles — Analysis Subset -->
+  <div class="sec-lbl" style="margin-bottom:10px">Analysis sheet deep-dive &mdash; 19 of 119 support cases with full onboarding context</div>
+  <div class="tiles" style="grid-template-columns:repeat(5,1fr)">
+    <div class="tile t-blue" data-tip="19 of 119 FSC support cases appear in the Analysis sheet — these have a linked Onboarding case, providing full context on engagement depth and whether support was linked to an onboarding gap.">
+      <div class="tile-num">19</div>
+      <div class="tile-lbl">Cases Analyzed</div>
+      <div class="tile-sub">from 119 support cases</div>
+    </div>
+    <div class="tile t-gray" data-tip="13 unique accounts across the 19 analyzed support cases. 55 total accounts raised FSC support cases across all monthly sheets.">
+      <div class="tile-num">13</div>
+      <div class="tile-lbl">Accounts in Analysis</div>
+      <div class="tile-sub">55 total with support cases</div>
+    </div>
+    <div class="tile t-green" data-tip="All 19 analyzed cases are linked to an active onboarding case — meaning 100% of the reviewed support cases occurred while the account was in active onboarding. Every case is onboarding scope.">
+      <div class="tile-num">19</div>
+      <div class="tile-lbl">Onboarding Scope</div>
+      <div class="tile-sub">100% &mdash; all cases OB-linked</div>
+    </div>
+    <div class="tile t-purple" data-tip="10 cases from 4 accounts (NHBC, Abu Dhabi, Holding RappiPay, Delta Dental) had both an onboarding case AND a completed guide session — the highest engagement tier.">
+      <div class="tile-num">10</div>
+      <div class="tile-lbl">Guide + OB Engaged</div>
+      <div class="tile-sub">4 accounts &middot; 53% of analyzed</div>
+    </div>
+    <div class="tile t-orange" data-tip="9 cases from 9 different accounts had onboarding-linked support cases but no guide session recorded. Each is a distinct account — representing 9 guidance coverage gaps.">
+      <div class="tile-num">9</div>
+      <div class="tile-lbl">OB Only &mdash; No Guide</div>
+      <div class="tile-sub">9 accounts &middot; guidance gap</div>
+    </div>
+  </div>
+
+  <!-- Engagement depth scope hero -->
+  <div class="sec-lbl" style="margin-top:20px">Engagement depth across 13 analyzed accounts</div>
+  <div class="scope-hero">
+    <div class="scope-block scope-in">
+      <div style="font-size:13px;font-weight:700;color:#2E844A;margin-bottom:6px">&#x2713; Guide + Onboarding Engaged</div>
+      <div class="scope-num">10</div>
+      <div class="scope-label">4 accounts &mdash; 53% of analyzed cases</div>
+      <div class="scope-desc">NHBC (7 cases), Abu Dhabi Commercial Bank, Holding RappiPay, Delta Dental &mdash; all received full onboarding engagement including guide sessions. Support cases from these accounts reflect ongoing complexity, not a guidance gap.</div>
+    </div>
+    <div class="scope-block scope-warn">
+      <div style="font-size:13px;font-weight:700;color:#744400;margin-bottom:6px">&#x26A0; OB Scope &mdash; No Guide Session</div>
+      <div class="scope-num" style="color:#DD7A01">9</div>
+      <div class="scope-label" style="color:#744400">9 accounts &mdash; 47% of analyzed cases</div>
+      <div class="scope-desc">Carclew, Clearview FCU, Sibley Memorial, Smithsonian, Marks Group, Tony Walker, LH Bank, Heisman, Oakwood Capital &mdash; onboarding-linked but no guide session on record. Each represents a guide coverage opportunity.</div>
+    </div>
+  </div>
+
+  <!-- Charts row: Theme + Guide -->
+  <div class="row2">
+    <!-- Theme breakdown -->
+    <div class="card">
+      <div class="card-title">Case Theme Breakdown</div>
+      <div class="card-sub">19 analyzed support cases by primary theme</div>
+      <div id="theme-chart" class="hbar-list" style="margin-top:8px"></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-50);margin-bottom:10px">Guide Coverage by Theme</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#0176D3;font-weight:600">Setup &amp; Configuration (10)</span>
+            <span style="display:flex;gap:6px">
+              <span class="scope-yes">7 guide+OB</span>
+              <span style="background:#FEF3E2;color:#744400;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600">3 OB only</span>
+            </span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#9050E9;font-weight:600">Provisioning &amp; Licenses (9)</span>
+            <span style="display:flex;gap:6px">
+              <span class="scope-yes">3 guide+OB</span>
+              <span style="background:#FEF3E2;color:#744400;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:600">6 OB only</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide engagement donut -->
+    <div class="card">
+      <div class="card-title">Guide Engagement Among Case Raisers</div>
+      <div class="card-sub">19 analyzed support cases &mdash; guide+OB vs OB only (no guide)</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:12px 0">
+        <svg width="160" height="160" viewBox="0 0 160 160" id="guide-donut"></svg>
+        <div style="display:flex;gap:24px;font-size:12px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:12px;height:12px;border-radius:50%;background:#2E844A;flex-shrink:0"></div>
+            <span>Guide + OB: <strong>10</strong></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:12px;height:12px;border-radius:50%;background:#DD7A01;flex-shrink:0"></div>
+            <span>OB only: <strong>9</strong></span>
+          </div>
+        </div>
+        <div style="background:#EEF4FF;border-radius:8px;padding:12px 16px;font-size:12px;line-height:1.6;color:#032D60;max-width:340px;text-align:center">
+          <strong>Key insight:</strong> All 19 cases are onboarding-linked. The split is purely about guide coverage &mdash; 9 accounts never received a guide session despite having active onboarding cases.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case Detail Table -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:18px 20px 12px">
+      <div class="card-title">Support Case Detail</div>
+      <div class="card-sub">19 cases from Analysis sheet (119 total FSC support cases, Feb&ndash;Oct 2026) &mdash; all onboarding-linked, sorted by theme</div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="case-table">
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Case #</th>
+          <th>Theme</th>
+          <th>Product Feature</th>
+          <th>Guide</th>
+          <th>OB Scope</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-tip="Abu Dhabi Commercial Bank: FSC setup and configuration question while in active onboarding (OB case 473113606). Guide session completed — account received full engagement.">
+          <td><strong>Abu Dhabi Commercial Bank</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">473500386</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Holding RappiPay: FSC setup and configuration question while in active onboarding (OB case 473331112). Guide session completed — account received full engagement.">
+          <td><strong>Holding RappiPay S.A.S.</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">473483831</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC — 7 support cases from one account (OB case 472748657), all setup and provisioning questions during active onboarding. Guide-engaged: yes.">
+          <td><strong>NHBC</strong><div style="font-size:10px;color:#747474">New Org &middot; 7 cases total</div></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">473521803</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474124498 — setup & configuration question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474124498</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474193940 — setup & configuration question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474193940</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474316652 — setup & configuration question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474316652</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474528366 — setup & configuration question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474528366</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Carclew Youth Arts: Setup & configuration question during active onboarding (OB case 474021199). No guide session recorded — guide coverage gap.">
+          <td><strong>Carclew Youth Arts</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474121239</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Clearview Federal Credit Union: Setup & configuration question during active onboarding (OB case 473631078). No guide session recorded.">
+          <td><strong>Clearview Federal Credit Union</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474140413</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Sibley Memorial Hospital: Setup & configuration question during active onboarding (OB case 473003522). No guide session recorded.">
+          <td><strong>Sibley Memorial Hospital</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474181398</td>
+          <td><span class="theme-pill tp-setup">Setup &amp; Config</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Setup / Configuration</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Delta Dental (SMB): License setup and provisioning during active onboarding (OB case 473495201). Guide-engaged account.">
+          <td><strong>Delta Dental of California</strong><div style="font-size:10px;color:#747474">SMB Broker Portal</div></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">473973026</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; License Setup / Permissions</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474056513 — account provisioning question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474056513</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Account Provisioning</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="NHBC case 474561530 — account provisioning question during active onboarding.">
+          <td><strong>NHBC</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474561530</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Account Provisioning</td>
+          <td><span class="guide-dot" style="background:#2E844A"></span>Yes</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Smithsonian Institution: License and provisioning setup during active onboarding (OB case 473510328). No guide session recorded.">
+          <td><strong>Smithsonian Institution</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474262289</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; License Setup / Permissions</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Marks Group Wealth Management: Account provisioning question during active onboarding (OB case 472966076). No guide session recorded.">
+          <td><strong>Marks Group Wealth Mgmt</strong><div style="font-size:10px;color:#747474">2nd Org</div></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474467775</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Account Provisioning</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Tony Walker Financial: Account provisioning question during active onboarding (OB case 474183951). No guide session recorded.">
+          <td><strong>Tony Walker Financial</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474625175</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Account Provisioning</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="LH Bank (Org 2): License and permissions setup during active onboarding (OB case 474165468). No guide session recorded.">
+          <td><strong>LH Bank (Org 2)</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474664135</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; License Setup / Permissions</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Heisman: License setup and provisioning during active onboarding (OB case 474413238). No guide session recorded.">
+          <td><strong>Heisman</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">474920913</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; License Setup / Permissions</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+        <tr data-tip="Oakwood Capital Consulting AG: Account provisioning guidance during active onboarding (OB case 474776546). No guide session recorded.">
+          <td><strong>Oakwood Capital Consulting AG</strong></td>
+          <td style="font-size:11px;color:#0176D3;font-weight:600">475233668</td>
+          <td><span class="theme-pill tp-prov">Provisioning &amp; Licenses</span></td>
+          <td style="font-size:11px;color:#747474">FSC &middot; Account Provisioning</td>
+          <td><span class="guide-dot" style="background:#DD7A01"></span>No</td>
+          <td><span class="scope-yes">&#x2713; OB-linked</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div><!-- /tab-cases -->
+
+<script>
+// ── Tooltip ──────────────────────────────────────────────────────────
+const tip = document.getElementById('tip');
+function showTip(e,text){ tip.textContent=text; tip.classList.add('on'); moveTip(e); }
+function moveTip(e){ tip.style.left=(e.clientX+14)+'px'; tip.style.top=(e.clientY-8)+'px'; }
+function hideTip(){ tip.classList.remove('on'); }
+
+document.querySelectorAll('[data-tip]').forEach(el=>{
+  el.addEventListener('mouseenter',e=>showTip(e,el.getAttribute('data-tip')));
+  el.addEventListener('mousemove',moveTip);
+  el.addEventListener('mouseleave',hideTip);
+});
+document.querySelectorAll('.scorecard tr[data-tip]').forEach(el=>{
+  el.style.cursor='default';
+  el.addEventListener('mouseenter',e=>showTip(e,el.getAttribute('data-tip')));
+  el.addEventListener('mousemove',moveTip);
+  el.addEventListener('mouseleave',hideTip);
+});
+
+// ── Tab switching ─────────────────────────────────────────────────────
+function showTab(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Milestone Bar Chart ───────────────────────────────────────────────
+const FUNNEL = [
+  {label:'Accounts Onboarded',   count:72, pct:100, color:'#0176D3', tip:'72 unique FSC accounts completed Premier Onboarding in FYTD\'27'},
+  {label:'Foundational Features',count:43, pct:60,  color:'#2E844A', tip:'43 accounts (60%) have ≥1 foundational FSC feature activated post-onboarding'},
+  {label:'PSL Activation',       count:28, pct:39,  color:'#DD7A01', tip:'28 accounts (39%) have activated their provisioned seat licenses'},
+  {label:'Salesforce Go Access', count:14, pct:19,  color:'#9050E9', tip:'14 accounts (19%) have Salesforce Go features enabled'},
+  {label:'Guide Engagement',     count:8,  pct:11,  color:'#06A59A', tip:'8 accounts (11%) completed a Guide engagement session — lowest coverage, highest impact'},
+];
+const msBars = document.getElementById('ms-bars');
+FUNNEL.forEach(d=>{
+  const col = document.createElement('div');
+  col.className = 'ms-col';
+  col.addEventListener('mouseenter', e=>showTip(e, d.tip));
+  col.addEventListener('mousemove', moveTip);
+  col.addEventListener('mouseleave', hideTip);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'ms-bar-wrap';
+
+  const bg = document.createElement('div');
+  bg.className = 'ms-bar-bg';
+  wrap.appendChild(bg);
+
+  const fill = document.createElement('div');
+  fill.className = 'ms-bar-fill';
+  fill.style.background = d.color;
+  fill.style.height = '0';
+  wrap.appendChild(fill);
+
+  const pctTop = document.createElement('div');
+  pctTop.className = 'ms-pct-top';
+  pctTop.textContent = d.pct + '%';
+  wrap.appendChild(pctTop);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'ms-lbl';
+  const strong = document.createElement('strong');
+  strong.textContent = d.label;
+  lbl.appendChild(strong);
+  const sub = document.createElement('span');
+  sub.textContent = '(' + d.count + ', ' + d.pct + '%)';
+  lbl.appendChild(sub);
+
+  col.appendChild(wrap);
+  col.appendChild(lbl);
+  msBars.appendChild(col);
+
+  // Animate on next frame
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    fill.style.height = d.pct + '%';
+  }));
+});
+
+// ── Grouped Bar Chart ─────────────────────────────────────────────────
+const BARS = [
+  {label:'Foundational\nFeatures', guide:88, noguide:56, delta:'+32pts', deltaCls:'delta-up',
+   tipG:'7/8 guide accounts (88%) have foundational features activated',
+   tipN:'36/64 non-guide accounts (56%) have foundational features activated'},
+  {label:'PSL\nActivation',        guide:59, noguide:37, delta:'+22pts', deltaCls:'delta-up',
+   tipG:'~59% avg PSL activation rate for guide-engaged accounts',
+   tipN:'~37% avg PSL activation rate for non-guide accounts'},
+  {label:'SF Go\nAccess',          guide:25, noguide:19, delta:'+6pts',  deltaCls:'delta-sm',
+   tipG:'2/8 guide accounts (25%) have SF Go features active',
+   tipN:'12/64 non-guide accounts (19%) have SF Go features active'},
+];
+const gbar = document.getElementById('gbar');
+const H = 168;
+BARS.forEach(d=>{
+  const gh = Math.round(d.guide/100*H);
+  const nh = Math.round(d.noguide/100*H);
+
+  const cluster = document.createElement('div');
+  cluster.className = 'gbar-cluster';
+
+  // — bars row —
+  const barsDiv = document.createElement('div');
+  barsDiv.className = 'gbar-bars';
+
+  const makeBar = (cls, h, pct, tipText) => {
+    const bar = document.createElement('div');
+    bar.className = 'gbar-bar ' + cls;
+    bar.style.height = h + 'px';
+    bar.addEventListener('mouseenter', e=>showTip(e, tipText));
+    bar.addEventListener('mousemove', moveTip);
+    bar.addEventListener('mouseleave', hideTip);
+    const lbl = document.createElement('span');
+    lbl.className = 'gbar-bar-lbl';
+    lbl.textContent = pct + '%';
+    bar.appendChild(lbl);
+    return bar;
+  };
+  barsDiv.appendChild(makeBar('gb-guide',   gh, d.guide,   d.tipG));
+  barsDiv.appendChild(makeBar('gb-noguide', nh, d.noguide, d.tipN));
+  cluster.appendChild(barsDiv);
+
+  // — axis label (normal flow, no absolute positioning) —
+  const axisDiv = document.createElement('div');
+  axisDiv.className = 'gbar-axis-lbl';
+  d.label.split('\n').forEach((part, i) => {
+    if (i > 0) axisDiv.appendChild(document.createElement('br'));
+    axisDiv.appendChild(document.createTextNode(part));
+  });
+  cluster.appendChild(axisDiv);
+
+  // — delta badge —
+  const badge = document.createElement('span');
+  badge.className = 'delta-badge ' + d.deltaCls;
+  badge.style.cssText = 'display:inline-flex;margin-top:4px;';
+  badge.textContent = d.delta;
+  cluster.appendChild(badge);
+
+  gbar.appendChild(cluster);
+});
+
+// ── Theme chart (Tab 3) ───────────────────────────────────────────────
+const THEMES = [
+  {label:'Setup & Configuration', value:10, pct:53, color:'#0176D3',
+   tip:'10 support cases (53%): FSC setup & configuration questions during active onboarding — 7 from guide-engaged accounts (NHBC, Abu Dhabi, RappiPay), 3 from accounts with no guide session (Carclew, Clearview, Sibley).'},
+  {label:'Provisioning & Licenses', value:9, pct:47, color:'#9050E9',
+   tip:'9 support cases (47%): license setup, account provisioning, permissions — 3 from guide-engaged accounts (Delta Dental, NHBC×2), 6 from accounts with no guide session.'},
+];
+const themeEl = document.getElementById('theme-chart');
+THEMES.forEach(d=>{
+  const row = document.createElement('div');
+  row.className='hbar-row';
+
+  const hd = document.createElement('div');
+  hd.className='hbar-hd';
+  const lbl = document.createElement('span');
+  lbl.className='hbar-lbl';
+  lbl.textContent=d.label;
+  const val = document.createElement('span');
+  val.className='hbar-val';
+  val.textContent=d.value+' cases · '+d.pct+'%';
+  hd.appendChild(lbl);
+  hd.appendChild(val);
+
+  const track = document.createElement('div');
+  track.className='hbar-track';
+  const fill = document.createElement('div');
+  fill.className='hbar-fill';
+  fill.style.cssText='width:'+d.pct+'%;background:'+d.color;
+  track.appendChild(fill);
+
+  row.appendChild(hd);
+  row.appendChild(track);
+  row.addEventListener('mouseenter',e=>showTip(e,d.tip));
+  row.addEventListener('mousemove',moveTip);
+  row.addEventListener('mouseleave',hideTip);
+  themeEl.appendChild(row);
+});
+
+// ── Guide donut (Tab 3) ───────────────────────────────────────────────
+(function(){
+  const svg = document.getElementById('guide-donut');
+  if(!svg) return;
+  const cx=80,cy=80,r=60,stroke=20;
+  const slices=[{val:10,color:'#2E844A'},{val:9,color:'#DD7A01'}];
+  const total=19;
+  let angle=-Math.PI/2;
+  slices.forEach(s=>{
+    const sweep = (s.val/total)*2*Math.PI;
+    const x1=cx+r*Math.cos(angle), y1=cy+r*Math.sin(angle);
+    angle+=sweep;
+    const x2=cx+r*Math.cos(angle), y2=cy+r*Math.sin(angle);
+    const large=sweep>Math.PI?1:0;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d','M '+cx+' '+cy+' L '+x1+' '+y1+' A '+r+' '+r+' 0 '+large+' 1 '+x2+' '+y2+' Z');
+    path.setAttribute('fill',s.color);
+    svg.appendChild(path);
+  });
+  const hole=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  hole.setAttribute('cx',cx);hole.setAttribute('cy',cy);
+  hole.setAttribute('r',r-stroke);hole.setAttribute('fill','#fff');
+  svg.appendChild(hole);
+  const t1=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t1.setAttribute('x',cx);t1.setAttribute('y',cy-6);
+  t1.setAttribute('text-anchor','middle');t1.setAttribute('font-size','18');
+  t1.setAttribute('font-weight','800');t1.setAttribute('fill','#2E844A');
+  t1.textContent='53%';svg.appendChild(t1);
+  const t2=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t2.setAttribute('x',cx);t2.setAttribute('y',cy+12);
+  t2.setAttribute('text-anchor','middle');t2.setAttribute('font-size','10');
+  t2.setAttribute('fill','#747474');
+  t2.textContent='guide+OB';svg.appendChild(t2);
+})();
+
+// ── Animate bars on load ──────────────────────────────────────────────
+setTimeout(()=>{
+  document.querySelectorAll('.sc-bar-fill,.hbar-fill,.cmp-fill-guide,.cmp-fill-noguide').forEach(el=>{
+    const w=el.style.width; el.style.width='0';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ el.style.width=w; }));
+  });
+},80);
+</script>
+</body>
+</html>

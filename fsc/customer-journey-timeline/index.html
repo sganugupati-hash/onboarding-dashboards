@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSC — Customer Journey Timeline</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #07101f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #0d1828;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #00a1e0, #032d60);
+    z-index: 10;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px 18px;
+    border-bottom: 1px solid #162035;
+    flex-shrink: 0;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; color: #fff; }
+  .header .sub { font-size: 12px; color: #4b6a8a; margin-top: 2px; }
+  .sfdc { font-size: 14px; font-weight: 700; color: #00a1e0; }
+  .sfdc span { color: #fff; }
+
+  /* ── BODY ── */
+  .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 12px 48px 20px;
+  }
+
+  /* ── CUSTOMER ROW ── */
+  .customer-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  /* Account label */
+  .acct-label {
+    width: 188px;
+    flex-shrink: 0;
+    padding-right: 20px;
+  }
+  .acct-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .acct-tag {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.4px;
+  }
+  .tag-blue   { background: #0c2044; color: #60a5fa; }
+  .tag-green  { background: #14532d; color: #22c55e; }
+  .tag-violet { background: #2e1065; color: #c4b5fd; }
+
+  /* Timeline track */
+  .timeline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  /* Connecting line */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 2px;
+    background: #162035;
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  /* Progress line (colored, width set per row inline) */
+  .progress-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 2px;
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: 2px;
+  }
+
+  /* ── MILESTONE ── */
+  .milestones {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .milestone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 190px;
+  }
+
+  .node {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    border: 2px solid transparent;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* node styles */
+  .node-done {
+    background: #032d60;
+    border-color: #00a1e0;
+  }
+  .node-highlight {
+    background: #14532d;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+  }
+  .node-action {
+    background: #431407;
+    border-color: #fb923c;
+    box-shadow: 0 0 0 4px rgba(251,146,60,0.15);
+  }
+
+  .m-label {
+    margin-top: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #e5e7eb;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .m-sub {
+    margin-top: 3px;
+    font-size: 10.5px;
+    color: #4b6a8a;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .m-badge {
+    margin-top: 5px;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+  .mbadge-blue   { background: #0c2044; color: #60a5fa; }
+  .mbadge-green  { background: #14532d; color: #22c55e; }
+  .mbadge-amber  { background: #431407; color: #fb923c; }
+  .mbadge-violet { background: #2e1065; color: #c4b5fd; }
+
+  /* divider between rows */
+  .divider {
+    height: 1px;
+    background: #162035;
+    margin: 0 0;
+  }
+
+  /* month marker above node */
+  .m-month {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: #4b6a8a;
+  }
+  .m-month.active { color: #00a1e0; }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h1>Customer Journey</h1>
+      <div class="sub">FSC Onboarding &nbsp;·&nbsp; Q2 2026 &nbsp;·&nbsp; Onboarding → Activation → Feature Adoption → Next Best Action</div>
+    </div>
+    <div class="sfdc">Sales<span>force</span></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- ══ ROW 1: Arcadia Wealth Management ══ -->
+    <div class="customer-row">
+      <div class="acct-label">
+        <div class="acct-name">Arcadia Wealth Management</div>
+        <span class="acct-tag tag-blue">Wealth Mgmt</span>
+      </div>
+      <div class="timeline">
+        <div class="progress-line" style="width:85%; background: linear-gradient(90deg,#00a1e0,#22c55e,#fb923c);"></div>
+        <div class="milestones">
+
+          <div class="milestone">
+            <div class="m-month active">Mar 26</div>
+            <div class="node node-done">🚀</div>
+            <div class="m-label">Onboarded</div>
+            <div class="m-sub">March 2026</div>
+            <span class="m-badge mbadge-blue">Complete</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Apr 26</div>
+            <div class="node node-done">📱</div>
+            <div class="m-label">Salesforce Go<br>Activated</div>
+            <div class="m-sub">3 features accessed<br>(Production)</div>
+            <span class="m-badge mbadge-blue">Done</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Apr 26</div>
+            <div class="node node-highlight">✅</div>
+            <div class="m-label">PSL Activation</div>
+            <div class="m-sub">2 / 2 PSLs activated</div>
+            <span class="m-badge mbadge-green">100%</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">May 26</div>
+            <div class="node node-highlight">⚡</div>
+            <div class="m-label">1st Feature<br>Activated</div>
+            <div class="m-sub">May 2026</div>
+            <span class="m-badge mbadge-green">Adopted</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Now</div>
+            <div class="node node-action">🎯</div>
+            <div class="m-label">Check-in</div>
+            <div class="m-sub">Adoption Guidance<br>Guide Handover</div>
+            <span class="m-badge mbadge-amber">Next Action</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ROW 2: Dina Försäkring AB ══ -->
+    <div class="customer-row">
+      <div class="acct-label">
+        <div class="acct-name">Dina Försäkring AB</div>
+        <span class="acct-tag tag-green">Insurance · EMEA</span>
+      </div>
+      <div class="timeline">
+        <div class="progress-line" style="width:85%; background: linear-gradient(90deg,#00a1e0,#22c55e,#fb923c);"></div>
+        <div class="milestones">
+
+          <div class="milestone">
+            <div class="m-month active">Mar 26</div>
+            <div class="node node-done">🚀</div>
+            <div class="m-label">Onboarded</div>
+            <div class="m-sub">March 2026</div>
+            <span class="m-badge mbadge-blue">Complete</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Mar 26</div>
+            <div class="node node-done">📱</div>
+            <div class="m-label">Salesforce Go<br>Activated</div>
+            <div class="m-sub">2 features accessed<br>(Sandbox)</div>
+            <span class="m-badge mbadge-blue">Done</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Apr 26</div>
+            <div class="node node-highlight">✅</div>
+            <div class="m-label">PSL Activation</div>
+            <div class="m-sub">465 / 531 PSLs activated</div>
+            <span class="m-badge mbadge-green">88%</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">May 26</div>
+            <div class="node node-highlight">⚡</div>
+            <div class="m-label">1st Feature<br>Activated</div>
+            <div class="m-sub">401 MAU · May 2026</div>
+            <span class="m-badge mbadge-green">Adopted</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Now</div>
+            <div class="node node-action">🎯</div>
+            <div class="m-label">Check-in</div>
+            <div class="m-sub">Adoption Guidance<br>Guide Handover</div>
+            <span class="m-badge mbadge-amber">Next Action</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ══ ROW 3: National Bank of Dominica ══ -->
+    <div class="customer-row">
+      <div class="acct-label">
+        <div class="acct-name">National Bank of Dominica</div>
+        <span class="acct-tag tag-violet">Banking · Americas</span>
+      </div>
+      <div class="timeline">
+        <div class="progress-line" style="width:65%; background: linear-gradient(90deg,#00a1e0,#22c55e);"></div>
+        <div class="milestones">
+
+          <div class="milestone">
+            <div class="m-month active">May 26</div>
+            <div class="node node-done">🚀</div>
+            <div class="m-label">Onboarded</div>
+            <div class="m-sub">May 2026</div>
+            <span class="m-badge mbadge-blue">Complete</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month" style="color:#4b6a8a">—</div>
+            <div class="node" style="background:#162035;border-color:#1f3358;font-size:14px;color:#4b6a8a;">—</div>
+            <div class="m-label" style="color:#4b6a8a">SF Go</div>
+            <div class="m-sub">Not yet activated</div>
+            <span class="m-badge" style="background:#162035;color:#4b6a8a">Pending</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">May 26</div>
+            <div class="node node-highlight">✅</div>
+            <div class="m-label">PSL Activation</div>
+            <div class="m-sub">87 / 220 PSLs activated</div>
+            <span class="m-badge mbadge-violet">40%</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Jun 26</div>
+            <div class="node node-highlight">⚡</div>
+            <div class="m-label">1st Feature<br>Activated</div>
+            <div class="m-sub">87 MAU · June 2026</div>
+            <span class="m-badge mbadge-green">Adopted</span>
+          </div>
+
+          <div class="milestone">
+            <div class="m-month active">Now</div>
+            <div class="node node-action">🔍</div>
+            <div class="m-label">Check-in</div>
+            <div class="m-sub">Review Feature<br>Adoption</div>
+            <span class="m-badge mbadge-amber">Next Action</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSC Onboarding — QBR Q2 Summary</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #07101f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 40px 24px;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: #0d1828;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* top accent */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #00a1e0 0%, #032d60 100%);
+    z-index: 10;
+  }
+
+  /* ── SLIDE HEADER ── */
+  .slide-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 36px 16px;
+    border-bottom: 1px solid #162035;
+    flex-shrink: 0;
+  }
+  .slide-header .title-block h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .slide-header .title-block .sub {
+    font-size: 12px;
+    color: #4b6a8a;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .sfdc-badge {
+    font-size: 14px;
+    font-weight: 700;
+    color: #00a1e0;
+  }
+  .sfdc-badge span { color: #fff; }
+
+  /* ── 4-QUADRANT GRID ── */
+  .quad-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    background: #162035;
+    flex: 1;
+  }
+  .quad {
+    background: #0d1828;
+    padding: 22px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .quad-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #00a1e0;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  /* Q1 — Volume */
+  .vol-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  .vol-big {
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    min-width: 72px;
+  }
+  .vol-meta { flex: 1; }
+  .vol-meta .main { font-size: 13px; color: #9ca3af; line-height: 1.4; }
+  .vol-meta .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-top: 4px;
+  }
+  .badge-green { background: #14532d; color: #22c55e; }
+  .badge-blue  { background: #0c2044; color: #60a5fa; }
+  .badge-amber { background: #431407; color: #fb923c; }
+
+  .reach-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+  }
+  .reach-q {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4b6a8a;
+    min-width: 22px;
+  }
+  .bar-wrap { flex: 1; }
+  .bar-bg {
+    height: 5px;
+    background: #162035;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .bar-fill.green { background: #22c55e; }
+  .bar-fill.blue  { background: #00a1e0; }
+  .bar-fill.amber { background: #fb923c; }
+  .reach-pct {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 38px;
+    text-align: right;
+  }
+  .reach-detail {
+    font-size: 11px;
+    color: #4b6a8a;
+    min-width: 130px;
+    text-align: right;
+  }
+
+  /* Q2 — Activation */
+  .act-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex: 1;
+  }
+  .act-tile {
+    background: #111e30;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .act-pct {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .act-pct.blue   { color: #00a1e0; }
+  .act-pct.green  { color: #22c55e; }
+  .act-pct.amber  { color: #fb923c; }
+  .act-pct.violet { color: #a78bfa; }
+  .act-label {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  /* Q3 — Standouts */
+  .standout-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #162035;
+  }
+  .standout-row:last-child { border-bottom: none; }
+  .standout-rank {
+    font-size: 18px;
+    font-weight: 800;
+    color: #00a1e0;
+    min-width: 28px;
+  }
+  .standout-body { flex: 1; }
+  .standout-name { font-size: 13px; font-weight: 600; color: #e5e7eb; }
+  .standout-sub  { font-size: 11px; color: #4b6a8a; margin-top: 2px; }
+  .standout-num  {
+    font-size: 22px;
+    font-weight: 800;
+    color: #22c55e;
+    text-align: right;
+    min-width: 54px;
+  }
+  .standout-num-unit { font-size: 10px; color: #4b6a8a; text-align: right; }
+
+  /* Q4 — Next Steps */
+  .ns-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #162035;
+  }
+  .ns-row:last-child { border-bottom: none; }
+  .ns-icon {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #0c2044;
+    border: 1.5px solid #00a1e0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #00a1e0;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ns-body .ns-title { font-size: 13px; font-weight: 600; color: #e5e7eb; }
+  .ns-body .ns-sub   { font-size: 11px; color: #4b6a8a; margin-top: 2px; line-height: 1.3; }
+
+  /* ── SLIDE 2 ── */
+  .slide2-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: #162035;
+    flex: 1;
+  }
+  .panel {
+    background: #0d1828;
+    padding: 24px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #00a1e0;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .risk-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid #162035;
+  }
+  .risk-row:last-child { border-bottom: none; }
+  .risk-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .risk-dot.red    { background: #ef4444; }
+  .risk-dot.amber  { background: #fb923c; }
+  .risk-dot.yellow { background: #facc15; }
+  .risk-title { font-size: 13px; font-weight: 600; color: #e5e7eb; }
+  .risk-sub   { font-size: 11px; color: #4b6a8a; margin-top: 3px; line-height: 1.35; }
+
+  .big-ns-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #162035;
+  }
+  .big-ns-row:last-child { border-bottom: none; }
+  .big-ns-num {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: #0c2044;
+    border: 1.5px solid #00a1e0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #00a1e0;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .big-ns-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .big-ns-sub   { font-size: 12px; color: #4b6a8a; line-height: 1.4; }
+
+  .label-row { display:flex; justify-content:space-between; margin-top:4px; }
+  .label-row span { font-size:10px; color:#4b6a8a; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ SLIDE 1 ═══════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="title-block">
+      <h1>FSC Onboarding — Q2 2026 QBR</h1>
+      <div class="sub">Financial Services Cloud &nbsp;·&nbsp; Onboarding Program Performance</div>
+    </div>
+    <div class="sfdc-badge">Sales<span>force</span></div>
+  </div>
+
+  <div class="quad-grid">
+
+    <!-- QUADRANT 1: Volume & Reach -->
+    <div class="quad">
+      <div class="quad-label">Volume &amp; Reach</div>
+
+      <div class="vol-row">
+        <div class="vol-big">32</div>
+        <div class="vol-meta">
+          <div class="main">FSC Onboardings Completed in Q2</div>
+          <span class="badge badge-green">+15 YoY &nbsp;↑</span>
+          <span class="badge badge-blue" style="margin-left:6px">7 In Progress</span>
+        </div>
+      </div>
+
+      <div style="margin-top:6px;">
+        <div class="reach-row">
+          <div class="reach-q">Q1</div>
+          <div class="bar-wrap">
+            <div class="bar-bg"><div class="bar-fill green" style="width:40%"></div></div>
+          </div>
+          <div class="reach-pct" style="color:#22c55e">40%</div>
+          <div class="reach-detail">13/32 eligible &nbsp;<span class="badge badge-green" style="font-size:10px;padding:1px 7px;">Met Target</span></div>
+        </div>
+        <div class="reach-row">
+          <div class="reach-q">Q2</div>
+          <div class="bar-wrap">
+            <div class="bar-bg"><div class="bar-fill amber" style="width:23%"></div></div>
+            <div class="label-row"><span>0%</span><span>Target ~40%</span></div>
+          </div>
+          <div class="reach-pct" style="color:#fb923c">23%</div>
+          <div class="reach-detail">7/30 eligible &nbsp;<span class="badge badge-amber" style="font-size:10px;padding:1px 7px;">On Track</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUADRANT 2: Activation Metrics -->
+    <div class="quad">
+      <div class="quad-label">Post-Onboarding Activation</div>
+      <div class="act-grid">
+        <div class="act-tile">
+          <div class="act-pct green">59%</div>
+          <div class="act-label">PSL Activation<br>&amp; Org Login</div>
+        </div>
+        <div class="act-tile">
+          <div class="act-pct blue">46%</div>
+          <div class="act-label">≥1 Foundational<br>Feature Activated</div>
+        </div>
+        <div class="act-tile">
+          <div class="act-pct amber">28%</div>
+          <div class="act-label">Salesforce Go<br>Accessed</div>
+        </div>
+        <div class="act-tile">
+          <div class="act-pct violet">10%</div>
+          <div class="act-label">Guide Engagement<br>(Handover)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUADRANT 3: Standout Accounts -->
+    <div class="quad">
+      <div class="quad-label">Top Performing Accounts</div>
+
+      <div class="standout-row">
+        <div class="standout-rank">#1</div>
+        <div class="standout-body">
+          <div class="standout-name">Dina Försäkring AB</div>
+          <div class="standout-sub">465/531 PSL · 2 SF Go features (Sandbox)</div>
+        </div>
+        <div>
+          <div class="standout-num">401</div>
+          <div class="standout-num-unit">MAU</div>
+        </div>
+      </div>
+      <div class="standout-row">
+        <div class="standout-rank">#2</div>
+        <div class="standout-body">
+          <div class="standout-name">WaFd Bank</div>
+          <div class="standout-sub">259/500 PSL · Guide engagement ✓</div>
+        </div>
+        <div>
+          <div class="standout-num">259</div>
+          <div class="standout-num-unit">MAU</div>
+        </div>
+      </div>
+      <div class="standout-row">
+        <div class="standout-rank">#3</div>
+        <div class="standout-body">
+          <div class="standout-name">Clearview Federal Credit Union</div>
+          <div class="standout-sub">276/380 PSL activated</div>
+        </div>
+        <div>
+          <div class="standout-num" style="color:#00a1e0">276</div>
+          <div class="standout-num-unit">PSL</div>
+        </div>
+      </div>
+      <div class="standout-row">
+        <div class="standout-rank">#4</div>
+        <div class="standout-body">
+          <div class="standout-name">Tony Walker · Capital A Wealth</div>
+          <div class="standout-sub">100% PSL activation rate on both accounts</div>
+        </div>
+        <div>
+          <div class="standout-num">100%</div>
+          <div class="standout-num-unit">PSL rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUADRANT 4: Next Steps -->
+    <div class="quad">
+      <div class="quad-label">Q3 Actions</div>
+
+      <div class="ns-row">
+        <div class="ns-icon">1</div>
+        <div class="ns-body">
+          <div class="ns-title">Convert 7 in-progress onboardings</div>
+          <div class="ns-sub">Close pipeline to meet Q2 target. Identify blockers per account.</div>
+        </div>
+      </div>
+      <div class="ns-row">
+        <div class="ns-icon">2</div>
+        <div class="ns-body">
+          <div class="ns-title">Re-engage zero-activation accounts</div>
+          <div class="ns-sub">Toka Internacional (0 MAU), Delta Dental + 4 others need CSM outreach.</div>
+        </div>
+      </div>
+      <div class="ns-row">
+        <div class="ns-icon">3</div>
+        <div class="ns-body">
+          <div class="ns-title">Scale Guide &amp; SF Go adoption</div>
+          <div class="ns-sub">Embed Guides in handover playbook (10%→25%); push Production SF Go access.</div>
+        </div>
+      </div>
+      <div class="ns-row">
+        <div class="ns-icon">4</div>
+        <div class="ns-body">
+          <div class="ns-title">Set Q3 pipeline &amp; target ≥40% reach</div>
+          <div class="ns-sub">Replicate Dina / WaFd playbook. Confirm premier-eligible accounts list.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════ SLIDE 2 ═══════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header">
+    <div class="title-block">
+      <h1>FSC Onboarding — Risks &amp; Path Forward</h1>
+      <div class="sub">Q2 2026 &nbsp;·&nbsp; Activation Gaps &amp; Q3 Priorities</div>
+    </div>
+    <div class="sfdc-badge">Sales<span>force</span></div>
+  </div>
+
+  <div class="slide2-body">
+
+    <!-- LEFT: Risks & Gaps -->
+    <div class="panel">
+      <div class="panel-label">Activation Gaps &amp; Risks</div>
+
+      <div class="risk-row">
+        <div class="risk-dot red"></div>
+        <div>
+          <div class="risk-title">Zero-activation accounts (5+)</div>
+          <div class="risk-sub">Toka Internacional (0/225 PSL, 0 MAU), Delta Dental, BANCO CONFISA, AFP Planvital, Mutuaide — no post-onboarding signals captured.</div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-dot amber"></div>
+        <div>
+          <div class="risk-title">Q2 reach at 23% vs Q1's 40%</div>
+          <div class="risk-sub">7 in-progress cases must convert. Without them, Q2 misses target by ~17 points.</div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-dot amber"></div>
+        <div>
+          <div class="risk-title">Guide engagement critically low (10%)</div>
+          <div class="risk-sub">Only 3 accounts used Guides in adoption handover — biggest lever for self-serve activation is underused.</div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-dot yellow"></div>
+        <div>
+          <div class="risk-title">SF Go largely Sandbox-only</div>
+          <div class="risk-sub">Several accounts show SF Go access in Sandbox, not Production — may inflate the 28% figure without real adoption.</div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-dot yellow"></div>
+        <div>
+          <div class="risk-title">PSL adoption gaps in large accounts</div>
+          <div class="risk-sub">Guardian Life (2/600), Toka (0/225), National Bank Dominica (87/220) — high seat counts with low activation ratios.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Next Steps -->
+    <div class="panel">
+      <div class="panel-label">Q3 Priorities</div>
+
+      <div class="big-ns-row">
+        <div class="big-ns-num">1</div>
+        <div>
+          <div class="big-ns-title">Close 7 in-progress cases &nbsp;<span class="badge badge-amber" style="font-size:10px;padding:2px 8px;">Urgent</span></div>
+          <div class="big-ns-sub">Assign DRIs per account, identify blockers (technical vs. engagement), target closure by end of Q3 Week 1.</div>
+        </div>
+      </div>
+      <div class="big-ns-row">
+        <div class="big-ns-num">2</div>
+        <div>
+          <div class="big-ns-title">Zero-activation rescue plan</div>
+          <div class="big-ns-sub">CSM-led outreach to 5+ accounts with no post-onboarding activity. Segment by reason: not started vs. disengaged.</div>
+        </div>
+      </div>
+      <div class="big-ns-row">
+        <div class="big-ns-num">3</div>
+        <div>
+          <div class="big-ns-title">Revamp onboarding handover with Guides</div>
+          <div class="big-ns-sub">Make Guide walkthrough mandatory in the handover checklist. Target: 10% → 25% Guide engagement in Q3.</div>
+        </div>
+      </div>
+      <div class="big-ns-row">
+        <div class="big-ns-num">4</div>
+        <div>
+          <div class="big-ns-title">Replicate Dina Försäkring &amp; WaFd playbook</div>
+          <div class="big-ns-sub">Document what drove 401 MAU and 259 MAU respectively. Apply to large-seat accounts (Guardian Life, Toka).</div>
+        </div>
+      </div>
+      <div class="big-ns-row">
+        <div class="big-ns-num">5</div>
+        <div>
+          <div class="big-ns-title">Set Q3 baseline — target ≥40% reach</div>
+          <div class="big-ns-sub">Confirm premier-eligible pipeline. Q1 set the benchmark at 40%; Q3 should match or exceed it.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

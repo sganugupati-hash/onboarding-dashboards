@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FSC QBR — Exec Slide</title>
+<style>
+/* ── Salesforce Design System tokens ── */
+:root {
+  --sf-navy:      #032D60;
+  --sf-blue:      #0176D3;
+  --sf-blue-dark: #014486;
+  --sf-teal:      #06A59A;
+  --sf-green:     #2E844A;
+  --sf-green-lt:  #EEF6EC;
+  --sf-amber:     #C23934;
+  --sf-amber-lt:  #FEF1EE;
+  --sf-orange:    #FE9339;
+  --sf-orange-lt: #FFF3E0;
+  --sf-purple:    #9050E9;
+  --sf-purple-lt: #F3EEF8;
+  --sf-red:       #BA0517;
+  --sf-red-lt:    #FEE9E8;
+  --sf-sky:       #108EB2;
+  --sf-sky-lt:    #E0F5FC;
+  --sf-blue-lt:   #EAF5FE;
+  --sf-teal-lt:   #E0F6F5;
+  --sf-gold:      #B57800;
+  --sf-gold-lt:   #FFF8E1;
+  --sf-rose:      #C2185B;
+  --sf-rose-lt:   #FCE4EC;
+  --sf-border:    #DDDBDA;
+  --sf-border-lt: #F3F2F2;
+  --sf-text:      #181818;
+  --sf-text-sec:  #3E3E3C;
+  --sf-text-ter:  #706E6B;
+  --sf-bg:        #FFFFFF;
+  --sf-bg-alt:    #F3F2F2;
+  --sf-bg-page:   #F8F7F4;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Salesforce Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #050d1f;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── SLIDE ── */
+.slide {
+  width: 1280px; height: 720px;
+  /* Official Salesforce Corporate Template 2026 background */
+  background:
+    radial-gradient(ellipse at 68% 42%, #2255E8 0%, #1240CC 28%, #0A27A0 52%, #06187A 72%, #030E55 100%),
+    radial-gradient(ellipse at 30% 80%, rgba(30,100,220,0.45) 0%, transparent 60%);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* subtle bottom-left glow — CSS only, no z-index stacking on children */
+.slide::before {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 420px; height: 320px;
+  background: radial-gradient(ellipse, rgba(30,90,210,0.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── HEADER ── */
+.hdr {
+  background: transparent;
+  padding: 13px 26px 10px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.hdr-left h1 {
+  font-size: 17px; font-weight: 800; color: #fff;
+  letter-spacing: -0.2px; line-height: 1.2;
+}
+.hdr-left .sub {
+  font-size: 9px; color: #7EC8F5; margin-top: 3px;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.hdr-right { display:flex; align-items:center; gap:10px; flex-shrink:0; margin-top:2px; }
+
+/* Salesforce cloud logo — matches template */
+.sf-logo-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.sf-cloud-pill {
+  background: #5BC8F5;
+  border-radius: 40px 40px 40px 40px / 38px 38px 30px 30px;
+  padding: 5px 14px 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sf-cloud-pill span {
+  font-size: 11px; font-weight: 700; font-style: italic;
+  color: #032D60; letter-spacing: -0.3px;
+}
+.qbr-badge {
+  background: rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.28);
+  color: #fff; font-size: 8.5px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  letter-spacing: .5px; text-transform: uppercase;
+  align-self: center;
+}
+
+/* ── HEADLINE ── */
+.headline {
+  background: #021246;
+  border: 1px solid rgba(255,255,255,0.15);
+  margin: 0 18px 0; border-radius: 6px; padding: 6px 14px;
+  font-size: 10px; color: #ffffff; line-height: 1.6; flex-shrink:0;
+}
+.headline b { color: #FFD747; font-weight: 700; }
+.headline .dim { color: rgba(255,255,255,0.55); }
+
+/* ── BODY ── */
+.body { flex:1; padding:6px 18px 10px; display:flex; flex-direction:column; gap:7px; min-height:0; }
+
+/* ── KPI ROW ── */
+.kpi-row { display:grid; grid-template-columns:repeat(8,1fr); gap:6px; flex-shrink:0; }
+.kpi {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 9px 10px 8px;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-top: 3px solid transparent;
+}
+.kpi.kBlue   { border-top-color: var(--sf-blue); }
+.kpi.kGreen  { border-top-color: var(--sf-green); }
+.kpi.kAmber  { border-top-color: var(--sf-orange); }
+.kpi.kSky    { border-top-color: var(--sf-sky); }
+.kpi.kPurple { border-top-color: var(--sf-purple); }
+.kpi.kTeal   { border-top-color: var(--sf-teal); }
+.kpi.kGold   { border-top-color: var(--sf-gold); }
+.kpi.kRose   { border-top-color: var(--sf-rose); }
+
+.kl { font-size:9px; font-weight:700; color:var(--sf-text-ter); letter-spacing:.6px; text-transform:uppercase; margin-bottom:3px; }
+.kn { font-size:22px; font-weight:800; line-height:1; }
+.kc { font-size:9px; color:var(--sf-text-ter); margin-top:4px; line-height:1.4; }
+.kd { display:inline-block; font-size:9px; font-weight:700; padding:1px 6px; border-radius:2px; margin-top:5px; }
+
+.cBlue   { color: var(--sf-blue); }   .dB { background:var(--sf-blue-lt);  color:var(--sf-blue-dark); }
+.cGreen  { color: var(--sf-green); }  .dG { background:var(--sf-green-lt); color:#1A4F2A; }
+.cAmber  { color: var(--sf-orange); } .dA { background:var(--sf-orange-lt);color:#7A4100; }
+.cSky    { color: var(--sf-sky); }    .dS { background:var(--sf-sky-lt);   color:#05607A; }
+.cPurple { color: var(--sf-purple); } .dP { background:var(--sf-purple-lt);color:#5B2AB0; }
+.cTeal   { color: var(--sf-teal); }   .dT { background:var(--sf-teal-lt);  color:#046E6A; }
+.cGold   { color: var(--sf-gold); }   .dGold { background:var(--sf-gold-lt); color:#7A5200; }
+.cRose   { color: var(--sf-rose); }   .dRose { background:var(--sf-rose-lt); color:#880E4F; }
+
+/* ── MAIN GRID ── */
+.main-grid {
+  flex:1; display:grid;
+  grid-template-columns: 4.5fr 3.8fr 3.8fr;
+  gap:8px; min-height:0;
+}
+
+/* ── BASE CARD ── */
+.mcol {
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.4);
+  padding: 10px 12px;
+  display:flex; flex-direction:column; gap:0; overflow:hidden;
+}
+.mcol.highlight {
+  background: #ffffff;
+  border: 2px solid #5BC8F5;
+  box-shadow: 0 0 0 1px rgba(91,200,245,0.3), 0 4px 20px rgba(0,0,0,0.25);
+}
+.mcol.dimmed {
+  background: #f0f0ef;
+  border-color: #d8d8d6;
+}
+.mcol.dimmed .mcol-hdr,
+.mcol.dimmed .rt,
+.mcol.dimmed .pt { color: #5a5a58; }
+.mcol.dimmed .rs,
+.mcol.dimmed .ps { color: #888886; }
+
+.mcol-hdr {
+  font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+  padding-bottom: 7px; border-bottom: 1px solid var(--sf-border-lt);
+  margin-bottom: 7px; flex-shrink: 0;
+  display: flex; align-items: center; gap: 5px;
+}
+.hdr-blue   { color: var(--sf-navy); }
+.hdr-red    { color: var(--sf-red); }
+.hdr-navy   { color: var(--sf-text-sec); }
+
+/* ── ADCB col ── */
+.deal-strip {
+  background: var(--sf-blue-lt);
+  border-radius: 3px; padding: 8px 10px;
+  border-left: 4px solid var(--sf-blue);
+  flex-shrink: 0; margin-bottom: 7px;
+}
+.deal-name { font-size: 11px; font-weight: 800; color: var(--sf-navy); }
+.deal-sub  { font-size: 8.5px; color: var(--sf-text-ter); margin-top: 2px; line-height: 1.4; }
+.chip-row  { display:flex; gap:5px; flex-wrap:wrap; margin-top:6px; }
+.chip { font-size: 8px; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
+.ch-n  { background: var(--sf-navy);     color: #fff; }
+.ch-b  { background: var(--sf-blue-lt);  color: var(--sf-blue-dark); border:1px solid #B0D4F0; }
+.ch-g  { background: var(--sf-green-lt); color: #1A4F2A; border:1px solid #B5DFC3; }
+.ch-p  { background: var(--sf-purple-lt);color: #5B2AB0; border:1px solid #CDB8F0; }
+.ch-a  { background: var(--sf-orange-lt);color: #7A4100; border:1px solid #FECB88; }
+
+.sec-mini {
+  font-size: 9px; font-weight: 700; color: var(--sf-text-ter);
+  letter-spacing: .5px; text-transform: uppercase;
+  margin-bottom: 5px; flex-shrink: 0;
+}
+
+.dl-row { display:flex; align-items:flex-start; gap:7px; padding:4px 0; border-bottom:1px solid var(--sf-border-lt); }
+.dl-row:last-child { border-bottom: none; }
+.dl-icon { font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+.dl-text { font-size: 9px; color: var(--sf-text-sec); line-height: 1.45; }
+.dl-text b { color: var(--sf-navy); }
+
+.oc-strip {
+  background: var(--sf-green-lt);
+  border-radius: 3px; padding: 7px 9px;
+  border: 1px solid #B5DFC3;
+  flex-shrink: 0; margin: 6px 0;
+}
+.oc-hdr { font-size: 9px; font-weight: 700; color: #1A4F2A; letter-spacing: .4px; text-transform: uppercase; margin-bottom: 4px; }
+.oc-row { display:flex; align-items:center; gap:6px; padding:2px 0; }
+.oc-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+.q-block {
+  background: #F8F7F4;
+  border-radius: 3px; padding: 7px 10px;
+  border-left: 3px solid var(--sf-blue);
+  flex-shrink: 0;
+}
+.q-text { font-size: 9px; color: var(--sf-text-sec); line-height: 1.55; font-style: italic; }
+.q-text b { color: var(--sf-navy); font-style: normal; }
+.q-attr { font-size: 9px; color: var(--sf-text-ter); font-weight: 600; margin-top: 4px; }
+
+.nba-strip {
+  background: var(--sf-navy);
+  border-radius: 3px; padding: 7px 10px;
+  flex-shrink: 0; margin-top: 6px;
+}
+.nba-hdr  { font-size: 9px; font-weight: 700; color: #A8C5E8; letter-spacing: .4px; text-transform: uppercase; margin-bottom: 4px; }
+.nba-text { font-size: 9px; color: #D8E8F5; line-height: 1.5; }
+.nba-text b { color: #66B3FF; }
+
+/* ── Risks col ── */
+.r-row { display:flex; align-items:flex-start; gap:7px; padding:5px 0; border-bottom:1px solid var(--sf-border-lt); }
+.r-row:last-child { border-bottom: none; }
+.r-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.r-dot.rd { background: var(--sf-red); }
+.r-dot.am { background: var(--sf-orange); }
+.rt { font-size: 9px; font-weight: 700; color: var(--sf-text-sec); line-height: 1.3; }
+.rs { font-size: 8.5px; color: var(--sf-text-ter); margin-top: 1px; line-height: 1.3; }
+
+.sec-divider { height: 1px; background: var(--sf-border); margin: 8px 0; flex-shrink: 0; }
+
+.p-row { display:flex; align-items:flex-start; gap:7px; padding:5px 0; border-bottom:1px solid var(--sf-border-lt); }
+.p-row:last-child { border-bottom: none; }
+.p-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--sf-blue-lt); border: 1px solid #7FC0EE;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 9px; font-weight: 700; color: var(--sf-blue-dark);
+  flex-shrink: 0; margin-top: 1px;
+}
+.pt { font-size: 9px; font-weight: 700; color: var(--sf-text-sec); line-height: 1.3; }
+.ps { font-size: 8.5px; color: var(--sf-text-ter); margin-top: 1px; line-height: 1.3; }
+
+/* ── Friction col ── */
+.f-row { display:flex; align-items:flex-start; gap:7px; padding:5px 0; border-bottom:1px solid var(--sf-border-lt); flex:1; }
+.f-row:last-child { border-bottom: none; }
+.f-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 10px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+}
+.fn-r { background: var(--sf-red-lt);   color: var(--sf-red); }
+.fn-a { background: var(--sf-amber-lt); color: var(--sf-amber); }
+.f-body { display:flex; flex-direction:column; gap:3px; flex:1; }
+.ft  { font-size: 9.5px; font-weight: 700; color: var(--sf-text-sec); line-height: 1.3; }
+.fsc { font-size: 8.5px; color: var(--sf-text-ter); }
+.fbody-text { font-size: 8.5px; color: var(--sf-text-ter); margin-top: 3px; line-height: 1.4; }
+.f-ask {
+  font-size: 8.5px; color: var(--sf-text-sec);
+  background: var(--sf-bg-alt);
+  border-radius: 2px; padding: 4px 8px;
+  border-left: 2px solid var(--sf-orange);
+  line-height: 1.4; margin-top: 2px;
+}
+.f-ask.fr { border-left-color: var(--sf-red); }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1>Proactive: Onboarding &amp; Guides (Day 0 &amp; 1) — FY27 Q2</h1>
+      <div class="sub">Day 0–1 Adoption &nbsp;·&nbsp; Onboarding + Guides Combined &nbsp;·&nbsp; QBR Executive Summary</div>
+    </div>
+    <div class="hdr-right">
+      <div class="sf-logo-wrap">
+        <div class="sf-cloud-pill"><span>salesforce</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- decorative sparkles top-right matching SF template -->
+  <div style="position:absolute;top:8px;right:180px;pointer-events:none;font-size:11px;color:#FFD747;opacity:0.7;line-height:1">✦</div>
+  <div style="position:absolute;top:20px;right:155px;pointer-events:none;font-size:9px;color:#FFD747;opacity:0.6;line-height:1">✦</div>
+  <div style="position:absolute;top:5px;right:140px;pointer-events:none;font-size:9px;color:#fff;opacity:0.5;line-height:1">✦</div>
+
+  <!-- HEADLINE -->
+  <div class="headline">
+    <b>💡</b>&nbsp;
+    FSC reach <b>5.4%</b> (+0.8pts QoQ) &nbsp;·&nbsp;
+    231 engagements · 137 accounts &nbsp;·&nbsp;
+    Onboarding <b>32/48</b> (+15 YoY) &nbsp;·&nbsp;
+    SF Go (FVM) <b>28%</b> <span class="dim">(sandbox→prod needed)</span> &nbsp;·&nbsp;
+    PSL <b>59%</b> ↑ from 47% &nbsp;·&nbsp;
+    Feature activation <b>46%</b> &nbsp;·&nbsp;
+    CSAT <b>4.85</b> &nbsp;·&nbsp;
+    Proactive outreach <b>43%</b> conversion vs <b>3%</b> cold (14× lift)
+  </div>
+
+  <div class="body">
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi kBlue">
+        <div class="kl">Overall FSC Reach</div>
+        <div class="kn cBlue">5.4%</div>
+        <div class="kc">231 engagements · 137 accounts<br>+29.8% engagements QoQ</div>
+        <div class="kd dB">↑ +0.8pts vs Q1</div>
+      </div>
+      <div class="kpi kGreen">
+        <div class="kl">Onboarding</div>
+        <div class="kn cGreen">32<span style="font-size:13px;font-weight:500;color:var(--sf-text-ter)">/48</span></div>
+        <div class="kc">Q2 completions · 64/82 FYTD<br>+15 YoY ↑ · 7 in progress</div>
+        <div class="kd dG">+15 YoY</div>
+      </div>
+      <div class="kpi kAmber">
+        <div class="kl">SF Go — FVM</div>
+        <div class="kn cAmber">28%</div>
+        <div class="kc">Post-OB SF Go access<br>⚠ Largely sandbox only</div>
+        <div class="kd dA">Prod activation = unlock</div>
+      </div>
+      <div class="kpi kSky">
+        <div class="kl">Guide Handover (FSC)</div>
+        <div class="kn cSky">10%</div>
+        <div class="kc">ADCB, Dina, Tryon<br>FSC nonprofits need more OB time</div>
+        <div class="kd dS">NBD follow-up scheduled</div>
+      </div>
+      <div class="kpi kPurple">
+        <div class="kl">PSL Activation</div>
+        <div class="kn cPurple">59%</div>
+        <div class="kc">Org login + PSL post-OB<br>↑ from 47% at last MBR</div>
+        <div class="kd dP">↑ +12pts MBR delta</div>
+      </div>
+      <div class="kpi kTeal">
+        <div class="kl">Feature Activation</div>
+        <div class="kn cTeal">46%</div>
+        <div class="kc">Activated ≥1 feature post-OB<br>401 MAU — Dina #1 in cohort</div>
+        <div class="kd dT">Guide → higher adoption</div>
+      </div>
+      <div class="kpi kGold">
+        <div class="kl">CSAT Score</div>
+        <div class="kn cGold">4.85</div>
+        <div class="kc">Overall customer satisfaction<br>post-onboarding survey</div>
+        <div class="kd dGold">Top-tier rating</div>
+      </div>
+      <div class="kpi kRose">
+        <div class="kl">Proactive Outreach</div>
+        <div class="kn cRose">43%</div>
+        <div class="kc">Targeted conversion rate<br><span style="color:var(--sf-red);font-size:7.5px">vs 3% cold</span> · 14× lift</div>
+        <div class="kd dRose">25 accounts in flight</div>
+      </div>
+    </div>
+
+    <!-- MAIN 3-COL GRID -->
+    <div class="main-grid">
+
+      <!-- COL A: ADCB — HIGHLIGHTED -->
+      <div class="mcol highlight">
+        <div class="mcol-hdr hdr-blue">🏦 Customer Story: Abu Dhabi Commercial Bank (ADCB) — Onboarding → NBA → Guide → Adoption</div>
+
+        <div class="deal-strip">
+          <div class="deal-name">Abu Dhabi Commercial Bank &nbsp;·&nbsp; Middle East</div>
+          <div class="deal-sub">$21M TCV — FSC · Agentforce · Premier · 15-week timeline · ME #1 Strategic Account</div>
+          <div class="chip-row">
+            <span class="chip ch-n">$21M TCV</span>
+            <span class="chip ch-b">ME #1 Strategic</span>
+            <span class="chip ch-p">FSC + Agentforce</span>
+            <span class="chip ch-g">On Track ✓</span>
+            <span class="chip ch-a">15-wk Timeline</span>
+          </div>
+        </div>
+
+        <div class="sec-mini">What Was Delivered</div>
+        <div class="dl-row">
+          <div class="dl-icon">🎯</div>
+          <div class="dl-text"><b>NBA via Onboarding:</b> Hrudhay identified ADCB's need and routed to Guide — proactive Onboarding → Guide handover model in action</div>
+        </div>
+        <div class="dl-row">
+          <div class="dl-icon">📚</div>
+          <div class="dl-text"><b>2 tailored Guide sessions</b> by Vikas Laad — FSC deep-dive + Agentforce enablement, extended format approved same day by Hemant</div>
+        </div>
+        <div class="dl-row">
+          <div class="dl-icon">🤝</div>
+          <div class="dl-text"><b>One-team:</b> AE Ramy + Guide Vikas + Onboarding Hrudhay — C-suite ADCB stakeholders directly engaged throughout</div>
+        </div>
+
+        <div class="oc-strip">
+          <div class="oc-hdr">Expected Outcomes &amp; Status</div>
+          <div class="oc-row"><div class="oc-dot" style="background:var(--sf-green)"></div><div style="font-size:9px;color:#1A4F2A">On track with 15-week adoption timeline — active check-ins confirmed</div></div>
+          <div class="oc-row"><div class="oc-dot" style="background:var(--sf-green)"></div><div style="font-size:9px;color:#1A4F2A">C-suite buy-in secured — senior stakeholders highly engaged</div></div>
+          <div class="oc-row"><div class="oc-dot" style="background:var(--sf-orange)"></div><div style="font-size:9px;color:#7A4100">ECS / SF Go follow-up check-in to be scheduled</div></div>
+        </div>
+
+        <div class="q-block">
+          <div class="q-text">"<b>I don't know how I would have managed this project without his support.</b> ADCB is the most strategic account in the ME. The customer senior people <b>LOVE you — your accountability, experience on the product and INDUSTRY is super amazing.</b>"</div>
+          <div class="q-attr">— Hemant Bheda, Regional Leadership</div>
+        </div>
+
+        <div class="nba-strip">
+          <div class="nba-hdr">Why This Matters — Model to Replicate</div>
+          <div class="nba-text"><b>OB → NBA → Guide</b> is Day 0–1 working as designed. Same motion activating for <b>National Bank of Dominica</b> (133 unseated PSLs + SF Go untouched). Scales via <b>Onboarding Agent (Q4)</b>.</div>
+        </div>
+      </div>
+
+      <!-- COL B: Risks + Path — DIMMED -->
+      <div class="mcol dimmed">
+        <div class="mcol-hdr hdr-red">⚠ Activation Risks</div>
+        <div class="r-row">
+          <div class="r-dot rd"></div>
+          <div><div class="rt">Zero-activation accounts (5+)</div><div class="rs">Toka Internacional (0/225 PSL, 0 MAU), Delta Dental, BANCO CONFISA, AFP Planvital, Mutuaide — no post-OB signals.</div></div>
+        </div>
+        <div class="r-row">
+          <div class="r-dot am"></div>
+          <div><div class="rt">SF Go largely Sandbox-only</div><div class="rs">28% figure may overstate real FVM adoption — production activation is the true measure.</div></div>
+        </div>
+        <div class="r-row">
+          <div class="r-dot am"></div>
+          <div><div class="rt">PSL gaps in large-seat accounts</div><div class="rs">Guardian Life (2/600), Toka (0/225), NBD (87/220) — high counts, low activation ratios.</div></div>
+        </div>
+
+        <div class="sec-divider"></div>
+        <div class="mcol-hdr hdr-navy" style="border-bottom:1px solid var(--sf-border-lt);margin-bottom:6px;">→ Q3 Path Forward</div>
+
+        <div class="p-row">
+          <div class="p-num">1</div>
+          <div><div class="pt">Zero-activation rescue plan</div><div class="ps">Proactive outreach to 5+ accounts. Segment: not started vs. disengaged.</div></div>
+        </div>
+        <div class="p-row">
+          <div class="p-num">2</div>
+          <div><div class="pt">Replicate Dina &amp; WaFd playbook</div><div class="ps">Document what drove 401 MAU (Dina) and 259 MAU (WaFd). Apply to Guardian Life, Toka.</div></div>
+        </div>
+        <div class="p-row">
+          <div class="p-num">3</div>
+          <div><div class="pt">Set Q3 baseline — target ≥40% reach</div><div class="ps">Confirm premier-eligible pipeline. Q1 set benchmark at 40%; Q3 should match or exceed.</div></div>
+        </div>
+        <div class="p-row">
+          <div class="p-num">4</div>
+          <div><div class="pt">Scale targeted outreach (43% conversion)</div><div class="ps">25 Meeting Concierge accounts in flight this week. OB Agent (Q4) automates at scale.</div></div>
+        </div>
+      </div>
+
+      <!-- COL C: Friction — DIMMED -->
+      <div class="mcol dimmed">
+        <div class="mcol-hdr hdr-red">🔧 Product Friction — Asks for Product Team</div>
+
+        <div class="f-row">
+          <div class="f-num fn-r">1</div>
+          <div class="f-body">
+            <div class="ft">FSC Core Migration Lacks Clear Guidance</div>
+            <div class="fsc">4 accounts: Susser Bank, Banamex, Unio Financial, CompSource</div>
+            <div class="fbody-text">Every account moving Legacy FSC → Core lacks docs on data mapping (FinancialAccountParty, address/balance history), integration patterns, or a pre-go-live checklist. Guide &amp; Architect time rebuilding this per-account.</div>
+            <div class="f-ask fr">Ask: Publish FSC Legacy→Core migration playbook covering data mapping, integrations, and pre-go-live checklist.</div>
+          </div>
+        </div>
+
+        <div class="f-row">
+          <div class="f-num fn-a">2</div>
+          <div class="f-body">
+            <div class="ft">Action Plans &amp; Interaction Summaries Self-Serve Gap</div>
+            <div class="fsc">17 cases · 13 accounts incl. Principal Life, BofA, Ameriprise, Solaris, J&amp;E Davy +8</div>
+            <div class="fbody-text">Even sophisticated customers need live walkthroughs for basic behaviour. Solaris hit field-level vs. object-level access inconsistency between Interaction and Interaction Summary — a product design issue, not a training gap.</div>
+            <div class="f-ask">Ask: Stronger in-app guidance + fix access model inconsistency (Interaction vs. Interaction Summary).</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-grid -->
+  </div><!-- /body -->
+</div><!-- /slide -->
+</body>
+</html>

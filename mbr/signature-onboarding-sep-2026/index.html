@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signature Onboarding Stats — Industries &amp; Revenue | Sep 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #09101f;
+    --surface:   #111827;
+    --surface2:  #1a2236;
+    --surface3:  #202d44;
+    --border:    #2a3859;
+    --blue:      #0070d2;
+    --blue-lt:   #2196f7;
+    --blue-glow: rgba(0,112,210,.18);
+    --green:     #3ecf8e;
+    --amber:     #f59e0b;
+    --red:       #ef4444;
+    --purple:    #a78bfa;
+    --text:      #e8edf5;
+    --text-sec:  #8ba3c4;
+    --text-mute: #4d6080;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.5; min-height: 100vh; }
+
+  /* ── Layout ── */
+  .page { max-width: 1280px; margin: 0 auto; padding: 0 32px 80px; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #071428 0%, #0c1f45 50%, #071428 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 60% 50%, rgba(0,112,210,.12) 0%, transparent 70%);
+  }
+  .hero-inner { max-width: 1280px; margin: 0 auto; position: relative; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,112,210,.18); border: 1px solid rgba(0,112,210,.4);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    color: #5bb0ff; margin-bottom: 20px;
+  }
+  .hero-badge::before { content: '◉'; font-size: 9px; }
+  .hero h1 { font-size: 38px; font-weight: 700; line-height: 1.15; letter-spacing: -.02em; margin-bottom: 10px; }
+  .hero h1 span { color: var(--blue-lt); }
+  .hero-sub { font-size: 15px; color: var(--text-sec); max-width: 640px; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .hero-meta-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-mute); }
+  .hero-meta-val { font-size: 14px; font-weight: 600; color: var(--text-sec); }
+
+  /* ── Section headers ── */
+  .section { padding-top: 48px; }
+  .section-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-sec); }
+  .section-note { font-size: 12px; color: var(--text-mute); }
+
+  /* ── KPI grid ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+  .kpi-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 20px 18px; position: relative; overflow: hidden; cursor: default;
+    transition: border-color .2s, transform .15s;
+  }
+  .kpi-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .kpi-card.highlight { border-color: rgba(0,112,210,.4); background: linear-gradient(145deg, #111827, #132038); }
+  .kpi-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent, var(--blue)); border-radius: 12px 12px 0 0;
+  }
+  .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-mute); margin-bottom: 8px; }
+  .kpi-main { display: flex; align-items: baseline; gap: 8px; }
+  .kpi-val { font-size: 36px; font-weight: 800; line-height: 1; color: var(--text); letter-spacing: -.02em; }
+  .kpi-val.sm { font-size: 28px; }
+  .kpi-unit { font-size: 13px; color: var(--text-sec); }
+  .kpi-vs { font-size: 11px; color: var(--text-mute); margin-top: 6px; }
+  .kpi-vs span { color: var(--text-sec); }
+  .delta { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px; margin-top: 8px; }
+  .delta.up   { background: rgba(62,207,142,.12); color: var(--green); }
+  .delta.down { background: rgba(239,68,68,.12); color: var(--red); }
+  .delta.neut { background: rgba(139,163,196,.1); color: var(--text-sec); }
+  .delta.up::before   { content: '▲ '; font-size: 8px; }
+  .delta.down::before { content: '▼ '; font-size: 8px; }
+
+  /* ── Charts ── */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-grid.wide3 { grid-template-columns: 2fr 1fr; }
+  .chart-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px;
+  }
+  .chart-card h3 { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--text-sec); margin-bottom: 6px; }
+  .chart-card .chart-sub { font-size: 11px; color: var(--text-mute); margin-bottom: 18px; }
+  .chart-wrap { position: relative; }
+  canvas { display: block; }
+
+  /* ── Outcome tiles ── */
+  .outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .outcome-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 32px 28px; text-align: center; position: relative; overflow: hidden;
+  }
+  .outcome-pct { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -.04em; }
+  .outcome-pct.blue { color: var(--blue-lt); }
+  .outcome-pct.green { color: var(--green); }
+  .outcome-label { font-size: 14px; color: var(--text-sec); margin-top: 10px; line-height: 1.5; }
+  .outcome-bg {
+    position: absolute; top: 50%; right: 24px; transform: translateY(-50%);
+    font-size: 96px; opacity: .04; font-weight: 900; pointer-events: none;
+  }
+
+  /* ── Backlog bar ── */
+  .backlog-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .backlog-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px 28px; display: flex; align-items: center; gap: 24px;
+  }
+  .backlog-num { font-size: 52px; font-weight: 900; line-height: 1; letter-spacing: -.04em; }
+  .backlog-num.sig { color: var(--amber); }
+  .backlog-num.all { color: var(--text-sec); }
+  .backlog-detail { flex: 1; }
+  .backlog-detail h4 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .backlog-detail p { font-size: 12px; color: var(--text-mute); }
+
+  /* ── Attribution note ── */
+  .attribution-card {
+    background: linear-gradient(135deg, #0d1b33, #11203d);
+    border: 1px solid rgba(0,112,210,.3); border-radius: 12px;
+    padding: 24px 28px; display: flex; gap: 16px;
+    margin-top: 48px;
+  }
+  .attr-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .attr-body h4 { font-size: 14px; font-weight: 700; color: var(--blue-lt); margin-bottom: 6px; }
+  .attr-body p  { font-size: 13px; color: var(--text-sec); line-height: 1.7; }
+  .attr-body p strong { color: var(--text); }
+
+  /* ── Comparison table ── */
+  .compare-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; overflow: hidden;
+  }
+  .compare-table { width: 100%; border-collapse: collapse; }
+  .compare-table th {
+    font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-mute); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .compare-table td { font-size: 13px; color: var(--text); padding: 10px 12px; border-bottom: 1px solid rgba(42,56,89,.5); }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,.02); }
+  .tval { font-weight: 700; }
+  .tval.sig { color: var(--blue-lt); }
+  .tval.good { color: var(--green); }
+  .tval.warn { color: var(--amber); }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .chart-grid, .chart-grid.wide3 { grid-template-columns: 1fr; }
+    .outcome-grid, .backlog-row { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero h1 { font-size: 26px; }
+  }
+
+  /* ── Print / presentation ── */
+  @media print {
+    body { background: white; color: #111; }
+    .hero { background: #003e8a; color: white; }
+    .kpi-card, .chart-card, .outcome-card { border: 1px solid #ccc; background: white; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">MBR Presentation</div>
+    <h1>Signature Onboarding Stats<br><span>Industries &amp; Revenue Cloud</span></h1>
+    <p class="hero-sub">
+      Signature program volume, velocity, and outcomes across Industries &amp; Revenue Cloud accounts.
+      Reporting now attributed to Industry Cloud when it carries the highest AOV.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Period</span>
+        <span class="hero-meta-val">Feb – Sep 20, 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">As of</span>
+        <span class="hero-meta-val">Sep 24, 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">MBR Cycle</span>
+        <span class="hero-meta-val">August – September 20th</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Sig Share (YTD)</span>
+        <span class="hero-meta-val">5.3% of all inflow</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── YTD KPIs ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">YTD Performance</span>
+      <span class="section-note">Signature vs. All Clouds · Feb – Sep 20, 2026</span>
+    </div>
+    <div class="kpi-grid">
+
+      <div class="kpi-card highlight" style="--accent:#2196f7">
+        <div class="kpi-label">Sig Inflow (YTD)</div>
+        <div class="kpi-main">
+          <span class="kpi-val">65</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>1,224</span></div>
+        <div class="delta up">+14 from last call</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#3ecf8e">
+        <div class="kpi-label">Sig Closures (YTD)</div>
+        <div class="kpi-main">
+          <span class="kpi-val">47</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>1,427</span></div>
+        <div class="delta up">+20 from last call</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#f59e0b">
+        <div class="kpi-label">Canceled (YTD)</div>
+        <div class="kpi-main">
+          <span class="kpi-val">2</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>101</span></div>
+        <div class="delta up">Recovered 1 case</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#f59e0b">
+        <div class="kpi-label">Active Backlog</div>
+        <div class="kpi-main">
+          <span class="kpi-val">8</span>
+          <span class="kpi-unit">sig</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>131</span></div>
+        <div class="delta up">Down from 19</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#a78bfa">
+        <div class="kpi-label">Sig TTA</div>
+        <div class="kpi-main">
+          <span class="kpi-val sm">0.1</span>
+          <span class="kpi-unit">days</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>1.6 days</span></div>
+        <div class="delta neut">Consistent</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#ef4444">
+        <div class="kpi-label">Sig TTR</div>
+        <div class="kpi-main">
+          <span class="kpi-val sm">20</span>
+          <span class="kpi-unit">days</span>
+        </div>
+        <div class="kpi-vs">Overall: <span>32 days</span></div>
+        <div class="delta down">+4 days (Jul/Aug backlog)</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#3ecf8e">
+        <div class="kpi-label">Guide/Prom Activation</div>
+        <div class="kpi-main">
+          <span class="kpi-val sm">62.5</span>
+          <span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-vs">of onboarded accounts</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#2196f7">
+        <div class="kpi-label">Full Handover (Both)</div>
+        <div class="kpi-main">
+          <span class="kpi-val sm">21</span>
+          <span class="kpi-unit">%</span>
+        </div>
+        <div class="kpi-vs">Guide + Prom alert · both activated</div>
+      </div>
+
+      <div class="kpi-card" style="--accent:#3ecf8e">
+        <div class="kpi-label">CSAT — FYTD</div>
+        <div class="kpi-main">
+          <span class="kpi-val sm" style="color:#ef4444">4.56</span>
+          <span class="kpi-unit">/ 5</span>
+        </div>
+        <div class="kpi-vs">Aug &amp; Sep: <span>4.71</span></div>
+        <div class="delta up">No DSATs</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Monthly Trend ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Monthly Demand Trend</span>
+      <span class="section-note">Inflow vs Completed · Signature cases only</span>
+    </div>
+    <div class="chart-grid wide3">
+      <div class="chart-card">
+        <h3>MoM Inflow vs Completed</h3>
+        <p class="chart-sub">Bar = inflow · Line = completed · September partial (up to Sep 20)</p>
+        <div class="chart-wrap" style="height:280px">
+          <canvas id="momChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Cumulative Closures</h3>
+        <p class="chart-sub">Running total of completed Signature cases YTD</p>
+        <div class="chart-wrap" style="height:280px">
+          <canvas id="cumulChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sub-cloud + OU ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Inflow Breakdown</span>
+      <span class="section-note">YTD Signature inflow by sub-cloud and Sales OU</span>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>By Industry Sub-Cloud</h3>
+        <p class="chart-sub">YTD Signature inflow distribution</p>
+        <div class="chart-wrap" style="height:300px">
+          <canvas id="subcloudChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>By Sales OU</h3>
+        <p class="chart-sub">YTD Signature inflow by operating unit</p>
+        <div class="chart-wrap" style="height:300px">
+          <canvas id="ouChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Outcomes ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Post-Onboarding Outcomes</span>
+      <span class="section-note">Guide &amp; Promotional Alert activation — handover signal quality</span>
+    </div>
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-pct blue">62.5%</div>
+        <div class="outcome-label">
+          of onboarded accounts have a corresponding<br>
+          <strong>Guide / Prom alert activation case</strong> created
+        </div>
+        <div class="outcome-bg">📋</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-pct green">21%</div>
+        <div class="outcome-label">
+          of onboarded accounts have <strong>both</strong><br>
+          Guide + Prom alert activation as handover
+        </div>
+        <div class="outcome-bg">✅</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sig vs Overall Comparison ── -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Signature vs Overall — Side-by-Side</span>
+      <span class="section-note">YTD metric comparison at Sep 20, 2026</span>
+    </div>
+    <div class="compare-card">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Industries &amp; Revenue</th>
+            <th>All Clouds</th>
+            <th>Sig Share</th>
+            <th>Delta (vs last call)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inflow</td>
+            <td><span class="tval sig">65</span></td>
+            <td class="tval">1,224</td>
+            <td>5.3%</td>
+            <td><span class="tval good">+14 ▲</span></td>
+          </tr>
+          <tr>
+            <td>Closures</td>
+            <td><span class="tval sig">47</span></td>
+            <td class="tval">1,427</td>
+            <td>3.3%</td>
+            <td><span class="tval good">+20 ▲</span></td>
+          </tr>
+          <tr>
+            <td>Canceled</td>
+            <td><span class="tval">2</span></td>
+            <td class="tval">101</td>
+            <td>2.0%</td>
+            <td><span class="tval good">Recovered 1 ▲</span></td>
+          </tr>
+          <tr>
+            <td>TTA</td>
+            <td><span class="tval good">0.1 days</span></td>
+            <td class="tval">1.6 days</td>
+            <td>—</td>
+            <td><span class="tval good">Consistent</span></td>
+          </tr>
+          <tr>
+            <td>TTR</td>
+            <td><span class="tval warn">20 days</span></td>
+            <td class="tval">32 days</td>
+            <td>—</td>
+            <td><span class="tval warn">+4 days ▲ (backlog)</span></td>
+          </tr>
+          <tr>
+            <td>Backlog</td>
+            <td><span class="tval good">8 cases</span></td>
+            <td class="tval">131 cases</td>
+            <td>6.1%</td>
+            <td><span class="tval good">Down from 19 ▲</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Attribution Note ── -->
+  <div class="attribution-card">
+    <div class="attr-icon">💡</div>
+    <div class="attr-body">
+      <h4>Reporting Change: Signature Onboarding Now Attributed to Industry Cloud</h4>
+      <p>
+        Success Plans span Sales, Service, Industries &amp; Revenue Cloud on a single platform —
+        prior completions were logged under <strong>Sales Cloud by default</strong>.
+        From <strong>June 2026</strong>, onboarding is attributed to
+        <strong>Industry &amp; Revenue Cloud when it carries the highest AOV</strong>,
+        giving sub-clouds a true picture of their onboarding footprint.
+        This closes a long-standing reporting gap and enables accurate cloud-level benchmarking going forward.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // ── Shared chart defaults ──
+  Chart.defaults.color = '#8ba3c4';
+  Chart.defaults.borderColor = '#2a3859';
+  Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+  Chart.defaults.font.size = 11;
+
+  const blue    = '#2196f7';
+  const green   = '#3ecf8e';
+  const amber   = '#f59e0b';
+  const surface = '#1a2236';
+  const grid    = 'rgba(42,56,89,.5)';
+
+  // ── MoM Chart ──
+  const momCtx = document.getElementById('momChart').getContext('2d');
+  new Chart(momCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep*'],
+      datasets: [
+        {
+          label: 'Inflow',
+          data: [1, 1, 12, 19, 27, 5],
+          backgroundColor: 'rgba(33,150,247,.65)',
+          borderColor: blue,
+          borderWidth: 1.5,
+          borderRadius: 6,
+          order: 2,
+        },
+        {
+          label: 'Completed',
+          data: [1, 1, 4, 13, 14, 14],
+          type: 'line',
+          borderColor: green,
+          backgroundColor: 'rgba(62,207,142,.12)',
+          borderWidth: 2.5,
+          pointRadius: 5,
+          pointBackgroundColor: green,
+          pointBorderColor: '#09101f',
+          pointBorderWidth: 2,
+          tension: .3,
+          fill: true,
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          labels: { boxWidth: 12, padding: 16, usePointStyle: true }
+        },
+        tooltip: {
+          backgroundColor: '#131929',
+          borderColor: '#2a3859',
+          borderWidth: 1,
+          padding: 12,
+          callbacks: {
+            afterBody(items) {
+              const inflow = items.find(i => i.dataset.label === 'Inflow')?.raw || 0;
+              const comp   = items.find(i => i.dataset.label === 'Completed')?.raw || 0;
+              const diff   = inflow - comp;
+              return diff >= 0 ? [`Net to backlog: +${diff}`] : [`Backlog cleared: ${Math.abs(diff)}`];
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: grid } },
+        y: {
+          beginAtZero: true,
+          grid: { color: grid },
+          ticks: { stepSize: 5 }
+        }
+      }
+    }
+  });
+
+  // ── Cumulative Closures Chart ──
+  const cumulCtx = document.getElementById('cumulChart').getContext('2d');
+  const completed = [1, 1, 4, 13, 14, 14];
+  const cumul = completed.reduce((acc, v, i) => { acc.push((acc[i-1] || 0) + v); return acc; }, []);
+  new Chart(cumulCtx, {
+    type: 'line',
+    data: {
+      labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep*'],
+      datasets: [{
+        label: 'Cumulative Closures',
+        data: cumul,
+        borderColor: amber,
+        backgroundColor: 'rgba(245,158,11,.12)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: amber,
+        pointBorderColor: '#09101f',
+        pointBorderWidth: 2,
+        tension: .35,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { boxWidth: 12, usePointStyle: true } },
+        tooltip: {
+          backgroundColor: '#131929',
+          borderColor: '#2a3859',
+          borderWidth: 1,
+          padding: 12,
+        }
+      },
+      scales: {
+        x: { grid: { color: grid } },
+        y: { beginAtZero: true, grid: { color: grid } }
+      }
+    }
+  });
+
+  // ── Sub-cloud chart ──
+  const subcloudCtx = document.getElementById('subcloudChart').getContext('2d');
+  const subClouds = [
+    { label: 'Public Sectors', val: 18 },
+    { label: 'Life Sciences',  val: 9  },
+    { label: 'Health Cloud',   val: 8  },
+    { label: 'Consumer Goods', val: 7  },
+    { label: 'Education Cloud',val: 5  },
+    { label: 'Comms Cloud',    val: 4  },
+    { label: 'Financial Svcs', val: 3  },
+    { label: 'Revenue Cloud',  val: 3  },
+  ].sort((a, b) => b.val - a.val);
+
+  const scColors = [
+    '#2196f7','#3ecf8e','#a78bfa','#f59e0b',
+    '#ef4444','#06b6d4','#ec4899','#84cc16'
+  ];
+
+  new Chart(subcloudCtx, {
+    type: 'bar',
+    data: {
+      labels: subClouds.map(d => d.label),
+      datasets: [{
+        label: 'Sig Inflow',
+        data: subClouds.map(d => d.val),
+        backgroundColor: subClouds.map((_, i) => scColors[i] + 'bb'),
+        borderColor:     subClouds.map((_, i) => scColors[i]),
+        borderWidth: 1.5,
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#131929',
+          borderColor: '#2a3859',
+          borderWidth: 1,
+          padding: 10,
+        }
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: grid }, ticks: { stepSize: 3 } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+
+  // ── OU chart ──
+  const ouCtx = document.getElementById('ouChart').getContext('2d');
+  const ouData = [
+    { label: 'PS',            val: 26 },
+    { label: 'AMER REG',      val: 10 },
+    { label: 'SASIA',         val: 8  },
+    { label: 'AMER PACE',     val: 4  },
+    { label: 'EMEA Central',  val: 3  },
+    { label: 'UKI',           val: 3  },
+    { label: 'AMER ACC TMT',  val: 2  },
+    { label: 'EMEA FRANCE',   val: 2  },
+    { label: 'EMEA NORTH',    val: 2  },
+    { label: 'EMEA SOUTH',    val: 2  },
+    { label: 'SMB',           val: 2  },
+    { label: 'ANZ',           val: 1  },
+  ];
+
+  new Chart(ouCtx, {
+    type: 'bar',
+    data: {
+      labels: ouData.map(d => d.label),
+      datasets: [{
+        label: 'Sig Inflow',
+        data: ouData.map(d => d.val),
+        backgroundColor: ouData.map((d, i) => {
+          if (d.label === 'PS') return 'rgba(33,150,247,.8)';
+          if (d.val >= 8)       return 'rgba(62,207,142,.7)';
+          if (d.val >= 4)       return 'rgba(167,139,250,.7)';
+          return 'rgba(139,163,196,.4)';
+        }),
+        borderColor: ouData.map((d) => {
+          if (d.label === 'PS') return blue;
+          if (d.val >= 8)       return green;
+          if (d.val >= 4)       return '#a78bfa';
+          return '#4d6080';
+        }),
+        borderWidth: 1.5,
+        borderRadius: 5,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#131929',
+          borderColor: '#2a3859',
+          borderWidth: 1,
+          padding: 10,
+        }
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: grid }, ticks: { stepSize: 5 } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
