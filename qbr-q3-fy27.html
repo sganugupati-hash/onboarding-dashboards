@@ -30,7 +30,8 @@
   .nav-link { color: var(--muted); font-size: 13px; font-weight: 500; padding: 18px 14px; cursor: pointer; border-bottom: 2px solid transparent; transition: color .15s; white-space: nowrap; }
   .nav-link:hover { color: var(--text); }
   .nav-link.active { color: var(--blue); border-bottom-color: var(--blue); }
-  .nav-right { margin-left: auto; color: var(--muted); font-size: 12px; padding: 16px 0; }
+  .nav-right { margin-left: auto; color: var(--muted); font-size: 12px; padding: 16px 0; display: flex; align-items: center; gap: 16px; }
+  .nav-logo { height: 22px; width: auto; opacity: 0.85; }
 
   /* SECTIONS */
   .section { display: none; padding: 28px; max-width: 1600px; margin: 0 auto; }
@@ -170,7 +171,7 @@
   <div class="nav-link active" onclick="show('overview')">Overview</div>
   <div class="nav-link" onclick="show('guide')">Signals &amp; Follow-up</div>
   <div class="nav-link" onclick="show('initiatives')">Q3 Initiatives</div>
-  <div class="nav-right">Q3 QBR &nbsp;·&nbsp; Aug – Oct 2026</div>
+  <div class="nav-right">Q3 QBR &nbsp;·&nbsp; Aug – Oct 2026<img class="nav-logo" src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg" alt="Salesforce"></div>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════
