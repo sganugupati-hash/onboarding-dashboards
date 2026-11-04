@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q3 QBR · Industries & Revenue Cloud Onboarding</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242736;
+    --border: #2e3347;
+    --text: #e2e8f0;
+    --muted: #8892a4;
+    --blue: #4f8ef7;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --teal: #2dd4bf;
+    --orange: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+
+  /* NAV */
+  .nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; gap: 0; position: sticky; top: 0; z-index: 100; }
+  .nav-brand { font-size: 14px; font-weight: 700; color: var(--blue); padding: 16px 20px 16px 0; border-right: 1px solid var(--border); margin-right: 8px; letter-spacing: -0.3px; white-space: nowrap; }
+  .nav-link { color: var(--muted); font-size: 13px; font-weight: 500; padding: 18px 14px; cursor: pointer; border-bottom: 2px solid transparent; transition: color .15s; white-space: nowrap; }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .nav-right { margin-left: auto; color: var(--muted); font-size: 12px; padding: 16px 0; }
+
+  /* SECTIONS */
+  .section { display: none; padding: 28px; max-width: 1600px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* HERO */
+  .hero { text-align: center; padding: 36px 0 28px; }
+  .hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  .hero-sub { color: var(--blue); font-size: 15px; margin-top: 4px; }
+  .hero-meta { color: var(--muted); font-size: 12px; margin-top: 14px; display: flex; gap: 28px; justify-content: center; }
+  .hero-meta span strong { color: var(--text); }
+  .hero-divider { width: 50px; height: 2px; background: var(--amber); margin: 16px auto 0; }
+
+  /* SECTION LABEL */
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; margin-top: 28px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .section-label:first-child { margin-top: 0; }
+
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .kpi .label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi .value { font-size: 30px; font-weight: 700; margin: 6px 0 2px; line-height: 1; }
+  .kpi .sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .kpi .delta { font-size: 11px; margin-top: 4px; }
+  .kpi-blue   { border-top: 2px solid var(--blue); }
+  .kpi-green  { border-top: 2px solid var(--green); }
+  .kpi-amber  { border-top: 2px solid var(--amber); }
+  .kpi-red    { border-top: 2px solid var(--red); }
+  .kpi-purple { border-top: 2px solid var(--purple); }
+  .kpi-teal   { border-top: 2px solid var(--teal); }
+
+  /* CARDS */
+  .grid-2   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3   { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .card-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+  .card-title span { color: var(--text); font-size: 13px; }
+  .chart-wrap { position: relative; }
+  .chart-wrap.h160 { height: 160px; }
+  .chart-wrap.h180 { height: 180px; }
+  .chart-wrap.h200 { height: 200px; }
+  .chart-wrap.h240 { height: 240px; }
+  .chart-wrap.h260 { height: 260px; }
+  .chart-wrap.h280 { height: 280px; }
+  .chart-wrap.h300 { height: 300px; }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-right { text-align: right; }
+
+  /* TAGS */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tag-blue   { background: rgba(79,142,247,.15);  color: var(--blue); }
+  .tag-green  { background: rgba(52,211,153,.15);  color: var(--green); }
+  .tag-amber  { background: rgba(251,191,36,.15);  color: var(--amber); }
+  .tag-red    { background: rgba(248,113,113,.15); color: var(--red); }
+  .tag-purple { background: rgba(167,139,250,.15); color: var(--purple); }
+  .tag-teal   { background: rgba(45,212,191,.15);  color: var(--teal); }
+
+  /* BAR ROWS */
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; }
+  .bar-label { width: 180px; flex-shrink: 0; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-track { flex: 1; background: var(--surface2); border-radius: 3px; height: 8px; }
+  .bar-fill  { height: 8px; border-radius: 3px; }
+  .bar-count { width: 40px; text-align: right; color: var(--muted); flex-shrink: 0; font-size: 11px; }
+
+  /* INSIGHT BOX */
+  .insight { background: rgba(251,191,36,.06); border: 1px solid rgba(251,191,36,.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; font-size: 12px; color: var(--text); }
+  .insight strong { color: var(--amber); }
+  .insight-blue { background: rgba(79,142,247,.06); border-color: rgba(79,142,247,.25); }
+  .insight-blue strong { color: var(--blue); }
+  .insight-green { background: rgba(52,211,153,.06); border-color: rgba(52,211,153,.25); }
+  .insight-green strong { color: var(--green); }
+
+  /* CSAT big */
+  .csat-big { text-align: center; padding: 8px 0; }
+  .csat-big .score { font-size: 48px; font-weight: 700; color: var(--green); line-height: 1; }
+  .csat-big .score-label { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* DONUT center text */
+  .donut-wrap { position: relative; }
+  .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none; }
+  .donut-center .big { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1; }
+  .donut-center .sm { font-size: 11px; color: var(--muted); }
+
+  /* METRIC ROW */
+  .metric-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-row .ml { color: var(--muted); font-size: 12px; }
+  .metric-row .mv { font-weight: 600; }
+
+  /* STATUS INDICATOR */
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+  .dot-green  { background: var(--green); }
+  .dot-amber  { background: var(--amber); }
+  .dot-red    { background: var(--red); }
+  .dot-blue   { background: var(--blue); }
+  .dot-muted  { background: var(--muted); }
+
+  /* TREND CHIP */
+  .up   { color: var(--green); font-size: 11px; }
+  .down { color: var(--red); font-size: 11px; }
+  .neutral { color: var(--muted); font-size: 11px; }
+
+  /* PILLS */
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .pill-blue { background: rgba(79,142,247,.12); color: var(--blue); }
+  .pill-green { background: rgba(52,211,153,.12); color: var(--green); }
+  .pill-amber { background: rgba(251,191,36,.12); color: var(--amber); }
+
+  /* CALLOUT STRIP */
+  .callout-strip { display: flex; gap: 12px; margin-bottom: 0; }
+  .callout-item { flex: 1; background: var(--surface2); border-radius: 8px; padding: 12px; text-align: center; }
+  .callout-item .cv { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+  .callout-item .cl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  @media (max-width: 900px) {
+    .kpi-grid, .kpi-grid-5 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-2-1, .grid-1-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">INDUSTRIES &amp; RC ONBOARDING</div>
+  <div class="nav-link active" onclick="show('overview')">Overview</div>
+  <div class="nav-link" onclick="show('guide')">Guide Handover</div>
+  <div class="nav-link" onclick="show('initiatives')">Q3 Initiatives</div>
+  <div class="nav-right">Q3 QBR &nbsp;·&nbsp; Aug – Oct 2026</div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 1 · OVERVIEW
+══════════════════════════════════════════════════════ -->
+<div class="section active" id="overview">
+
+  <div class="hero">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">QUARTERLY BUSINESS REVIEW · Q3 FY27</div>
+    <h1>Industries &amp; Revenue Cloud<br>Customer Onboarding</h1>
+    <div class="hero-sub">August · September · October 2026</div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta">
+      <span><strong>279</strong> cases received</span>
+      <span><strong>268</strong> unique accounts</span>
+      <span><strong>43</strong> Signature &nbsp;·&nbsp; <strong>236</strong> Premier</span>
+      <span>Reporting period: <strong>Aug 1 – Oct 31, 2026</strong></span>
+    </div>
+  </div>
+
+  <div class="section-label">Q3 KPI Snapshot</div>
+  <div class="kpi-grid" style="margin-bottom:16px;">
+    <div class="kpi kpi-blue">
+      <div class="label">Q3 Inflow</div>
+      <div class="value" style="color:var(--blue)">279</div>
+      <div class="sub">Aug 100 · Sep 89 · Oct 90</div>
+      <div class="delta neutral">Steady cadence after H1 peaks</div>
+    </div>
+    <div class="kpi kpi-green">
+      <div class="label">Q3 Closures</div>
+      <div class="value" style="color:var(--green)">255</div>
+      <div class="sub">Aug 95 · Sep 94 · Oct 66</div>
+      <div class="delta neutral">89 cases in backlog progressing</div>
+    </div>
+    <div class="kpi kpi-amber">
+      <div class="label">Cancellation Rate</div>
+      <div class="value" style="color:var(--amber)">16%</div>
+      <div class="sub">45 canceled · Aug 14 · Sep 19 · Oct 12</div>
+      <div class="delta neutral">Customer non-responsive primary driver</div>
+    </div>
+    <div class="kpi kpi-purple">
+      <div class="label">CSAT Score</div>
+      <div class="value" style="color:var(--purple)">4.85</div>
+      <div class="sub">Survey responses Q3</div>
+      <div class="delta up">↑ Above 4.75 target</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid" style="margin-bottom:20px;">
+    <div class="kpi kpi-teal">
+      <div class="label">Avg TTA</div>
+      <div class="value" style="color:var(--teal);font-size:26px;">0.3 <span style="font-size:14px;font-weight:400">days</span></div>
+      <div class="sub">Time to assign</div>
+    </div>
+    <div class="kpi kpi-blue">
+      <div class="label">Avg TTE</div>
+      <div class="value" style="color:var(--blue);font-size:26px;">1.4 <span style="font-size:14px;font-weight:400">days</span></div>
+      <div class="sub">Time to engage</div>
+    </div>
+    <div class="kpi kpi-green">
+      <div class="label">Avg TTR</div>
+      <div class="value" style="color:var(--green);font-size:26px;">25.5 <span style="font-size:14px;font-weight:400">days</span></div>
+      <div class="sub">Completed cases</div>
+    </div>
+    <div class="kpi kpi-amber">
+      <div class="label">Backlog</div>
+      <div class="value" style="color:var(--amber);font-size:26px;">89</div>
+      <div class="sub">Active open cases</div>
+    </div>
+  </div>
+
+  <div class="insight insight-blue">
+    <strong>Q3 Highlights:</strong> Inflow dropped in Q3 compared to the surges seen in Q2 and end of Q1 — April (131) and July (130) were driven by proactive team pushes, not sustained organic demand. Q3 settled to a baseline of ~93/month. The team is currently building <strong>Onboarding 2.0</strong> to increase demand with better context and structured intake, which is expected to drive a more consistent and higher-quality pipeline going forward.
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 2 · GUIDE HANDOVER & CASE INSIGHTS
+══════════════════════════════════════════════════════ -->
+<div class="section" id="guide">
+
+  <div class="hero">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">QUARTERLY BUSINESS REVIEW · Q3 FY27</div>
+    <h1>Guide Handover &amp; Case Insights</h1>
+    <div class="hero-sub">Post-Onboarding Engagement · Aug – Oct 2026</div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="section-label">Guide (ADR) Engagement After Onboarding</div>
+  <div class="kpi-grid" style="margin-bottom:20px;">
+    <div class="kpi kpi-blue">
+      <div class="label">Accounts Onboarded (FYTD)</div>
+      <div class="value" style="color:var(--blue)">732</div>
+      <div class="sub">Unique accounts across Q1–Q3</div>
+    </div>
+    <div class="kpi kpi-green">
+      <div class="label">Have a Guide Case</div>
+      <div class="value" style="color:var(--green)">310</div>
+      <div class="sub">42% of onboarded accounts</div>
+      <div class="delta up">↑ Strong follow-on signal</div>
+    </div>
+    <div class="kpi kpi-amber">
+      <div class="label">Guide Case Post-Onboarding</div>
+      <div class="value" style="color:var(--amber)">209</div>
+      <div class="sub">29% of onboarded accounts</div>
+      <div class="delta neutral">Q3 lower — timing effect</div>
+    </div>
+    <div class="kpi kpi-purple">
+      <div class="label">Q3 Post-Onboarding Rate</div>
+      <div class="value" style="color:var(--purple)">27%</div>
+      <div class="sub">Accounts with Guide signals</div>
+      <div class="delta neutral">vs 35–36% in Q1/Q2</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div class="card">
+      <div class="card-title">Guide Engagement by Quarter</div>
+      <table>
+        <thead><tr><th>Metric</th><th class="td-right">Q1</th><th class="td-right">Q2</th><th class="td-right">Q3</th></tr></thead>
+        <tbody>
+          <tr><td>Unique accounts with Guide Cases</td><td class="td-right"><span class="tag tag-blue">99 (45%)</span></td><td class="td-right"><span class="tag tag-blue">145 (47%)</span></td><td class="td-right"><span class="tag tag-blue">129 (44%)</span></td></tr>
+          <tr><td>Guide cases post-onboarding</td><td class="td-right"><span class="tag tag-green">78 (35%)</span></td><td class="td-right"><span class="tag tag-green">110 (36%)</span></td><td class="td-right"><span class="tag tag-amber">80 (27%)</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;font-size:11px;color:var(--muted);">Counts are cases. Q3's lower post-onboarding rate is partly a timing effect — less time for follow-on engagement to materialise.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top Guide Topics (FYTD — 765 cases)</div>
+      <div class="bar-row"><div class="bar-label">Nonprofit Cloud</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--blue)"></div></div><div class="bar-count">268</div></div>
+      <div class="bar-row"><div class="bar-label">Financial Services</div><div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--green)"></div></div><div class="bar-count">89</div></div>
+      <div class="bar-row"><div class="bar-label">NPSP</div><div class="bar-track"><div class="bar-fill" style="width:24%;background:var(--teal)"></div></div><div class="bar-count">65</div></div>
+      <div class="bar-row"><div class="bar-label">Developer Support</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--purple)"></div></div><div class="bar-count">49</div></div>
+      <div class="bar-row"><div class="bar-label">Education Cloud</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--amber)"></div></div><div class="bar-count">33</div></div>
+      <div class="bar-row"><div class="bar-label">Omnistudio</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--orange)"></div></div><div class="bar-count">31</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Case Comments &amp; Notes Analysis</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="insight">
+        <strong>Login Issues — 30%</strong><br>
+        Customers encounter login problems on Help &amp; Training or their Salesforce instance. A common first blocker that delays onboarding progress.
+      </div>
+      <div class="insight">
+        <strong>Scheduling Friction</strong><br>
+        Appointment Scheduler issues and customers going unresponsive after initial engagement are the primary driver of cancellations (14.2% cancel rate in Q3).
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="insight insight-green">
+        <strong>Strong Follow-On Signals — 27%</strong><br>
+        Roughly 1 in 4 Q3 customers show Guide Handover signals in case comments. A few also request post-90-day check-ins — a warm pipeline for Guide engagement.
+      </div>
+      <div class="insight insight-blue">
+        <strong>Language Requirement — 10%</strong><br>
+        ~10% of customers request Spanish-language delivery. Mexico Success Engineers are now delivering Onboarding in Q3 (5 cases in progress).
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <strong>Out-of-Scope / Asks:</strong> A subset of customers — particularly Nonprofit Cloud — arrive expecting set-up and configuration assistance rather than guided onboarding. Clear expectation-setting at intake is an Onboarding 2.0 focus area.
+  </div>
+
+  <div class="insight insight-blue" style="margin-top:12px;">
+    <strong>Opportunity:</strong> 4 in 10 onboarded accounts have an Industry Guide case, but only 3 in 10 have one created after onboarding closes. Strengthening the Onboarding → Guide handoff is the clearest lever to grow post-onboarding engagement.
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 3 · Q3 INITIATIVES
+══════════════════════════════════════════════════════ -->
+<div class="section" id="initiatives">
+
+  <div class="hero">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">QUARTERLY BUSINESS REVIEW · Q3 FY27</div>
+    <h1>Q3 Initiatives</h1>
+    <div class="hero-sub">Education Cloud &amp; FSC Onboarding Checklist — Aug – Oct 2026</div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="section-label">Industry Expansion &amp; Enablement</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Mexico Success Engineers Enablement</div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:var(--green)">Sep</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Shadow Sessions</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:var(--blue)">3</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Cases Assigned Oct</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:20px;font-weight:700;color:var(--amber)">5</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">In Progress</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);">Enabled Mexico Success Engineers on Industries Onboarding. Shadow sessions completed in September; 3 cases assigned in October. 5 Spanish-language cases in progress, addressing the ~10% language demand signal from case comments.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">Onboarding &amp; Adoption Agent — AI</div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <div style="flex:1;background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div class="tag tag-green" style="margin-bottom:6px;">LIVE</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">FSC</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Onboarding Agent deployed</div>
+        </div>
+        <div style="flex:1;background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div class="tag tag-amber" style="margin-bottom:6px;">EVALUATING</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">RCA</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;">Under evaluation</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);">Collaborating on Onboarding and Adoption Agent. FSC is live; RCA is currently under evaluation for deployment scope and readiness.</div>
+    </div>
+
+  </div>
+
+  <div class="section-label">FSC Engagement &amp; Impact</div>
+  <div class="grid-2" style="margin-bottom:20px;">
+
+    <div class="card">
+      <div class="card-title" style="color:var(--blue)">Engagement Framework — FSC Wave 1</div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--blue)">18</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Accounts Outreached</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--green)">5</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Accounts Engaged</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:var(--amber)">28%</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px">Engagement Rate</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);">First wave of 18 FSC accounts outreached as part of the Engagement Framework. 5 accounts engaged. Also engaged 12 AEs; created 4 Onboarding cases and 1 Guide engagement.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal)">FSC Impact &amp; Support Theme Review</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <span class="tag tag-green">Completed</span>
+        <span class="tag tag-blue">Q3 FY27</span>
+      </div>
+      <div class="metric-row"><span class="ml">Focus area</span><span class="mv">FSC Onboarding Impact</span></div>
+      <div class="metric-row"><span class="ml">Output</span><span class="mv">Support theme review completed</span></div>
+      <div class="metric-row"><span class="ml">Next</span><span class="mv">Wave 2 outreach planning</span></div>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted);">FSC impact and support themes reviewed to inform Wave 2 targeting and improve account readiness assessment.</div>
+    </div>
+
+  </div>
+
+  <div class="section-label">Platform &amp; Process</div>
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title" style="color:var(--amber)">Onboarding 2.0</div>
+    <div class="grid-3" style="gap:14px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--amber);margin-bottom:8px;">Support Signals</div>
+        <div style="font-size:12px;color:var(--muted);">Integrating case comment patterns (login issues, cancellation drivers, language needs) into intake to set clearer expectations and reduce avoidable cancellations.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:8px;">Architect Blueprints</div>
+        <div style="font-size:12px;color:var(--muted);">Building structured onboarding blueprints per cloud/industry to give engineers consistent, high-quality delivery frameworks and reduce variance in TTR.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-bottom:8px;">Demand &amp; Pipeline</div>
+        <div style="font-size:12px;color:var(--muted);">Better intake context and structured onboarding expected to drive more consistent, higher-quality pipeline. Key lever to increase post-onboarding Guide engagement beyond the current 27% rate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight insight-blue">
+    <strong>Q3 Initiative Summary:</strong> Three parallel tracks — enablement (Mexico SEs live), AI tooling (FSC agent deployed, RCA in eval), and engagement framework (FSC Wave 1 complete) — alongside Onboarding 2.0 foundational work on support signals and blueprints. Together these set up a stronger Q4 with improved demand quality and broader delivery capacity.
+  </div>
+
+</div>
+
+
+<script>
+// ── CHART DEFAULTS ───────────────────────────────────────
+Chart.defaults.color = '#8892a4';
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+Chart.defaults.font.size = 11;
+
+const MONTHS = ['Aug', 'Sep', 'Oct'];
+const BLUE = '#4f8ef7', GREEN = '#34d399', AMBER = '#fbbf24', RED = '#f87171',
+      PURPLE = '#a78bfa', TEAL = '#2dd4bf', MUTED = '#8892a4';
+
+const barOpts = (yMax) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}` } } },
+  scales: {
+    x: { grid: { color: '#2e3347' }, ticks: { color: MUTED } },
+    y: { grid: { color: '#2e3347' }, ticks: { color: MUTED }, ...(yMax ? { max: yMax } : {}), beginAtZero: true }
+  }
+});
+
+// ── NAV ───────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
